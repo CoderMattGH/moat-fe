@@ -33,10 +33,10 @@ class Options extends React.Component {
           this.props.showOptionsPage(false);
         }}
       >
-        <div className="Options PopUp-Screen RoundBorder">
+        <div className="options PopUp-Screen RoundBorder">
           <h2>Options</h2>
-          <div className="Option">
-            <label>Play Sounds</label>
+          <div className="option">
+            <label className="form-label">Play Sounds</label>
             <input
               type="checkbox"
               checked={this.props.playSounds ? true : false}
@@ -46,8 +46,8 @@ class Options extends React.Component {
             />
           </div>
 
-          <div className="Option">
-            <label>Play Music</label>
+          <div className="option">
+            <label className="form-label">Play Music</label>
             <input
               type="checkbox"
               checked={this.props.playMusic ? true : false}
@@ -57,10 +57,11 @@ class Options extends React.Component {
             />
           </div>
 
-          <div className="Option">
-            <label>Difficulty</label>
+          <div className="option">
+            <label className="form-label">Difficulty</label>
             <select
               name="difficulty"
+              className="select"
               defaultValue={this.props.difficulty}
               onChange={(evt) => this.props.setDifficulty(evt.target.value)}
             >

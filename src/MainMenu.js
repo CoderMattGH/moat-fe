@@ -58,21 +58,35 @@ class MainMenu extends React.Component {
                   this.props.handleLogout();
                 }}
               >
-                Logout
+                Logout [{user.username}]
               </a>
             </li>
           ) : (
-            <li>
-              <a
-                href="/"
-                onClick={(evt) => {
-                  evt.preventDefault();
-                  this.props.showLoginPage(true);
-                }}
-              >
-                Login
-              </a>
-            </li>
+            <>
+              <li>
+                <a
+                  href="/"
+                  onClick={(evt) => {
+                    evt.preventDefault();
+                    this.props.showRegisterPage(true);
+                  }}
+                >
+                  Register
+                </a>
+              </li>
+
+              <li>
+                <a
+                  href="/"
+                  onClick={(evt) => {
+                    evt.preventDefault();
+                    this.props.showLoginPage(true);
+                  }}
+                >
+                  Login
+                </a>
+              </li>
+            </>
           )}
 
           {/* <li>

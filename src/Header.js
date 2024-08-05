@@ -16,6 +16,7 @@ class Header extends React.Component {
             showAboutPage={this.props.showAboutPage}
             showOptionsPage={this.props.showOptionsPage}
             showStatsPage={this.props.showStatsPage}
+            showRegisterPage={this.props.showRegisterPage}
             showLoginPage={this.props.showLoginPage}
             handleLogout={this.props.handleLogout}
           />

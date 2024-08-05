@@ -72,60 +72,60 @@ class Stats extends React.Component {
     } else {
       if (!this.state.stats) {
         content = (
-          <div className="StatRow NoStats">
+          <div className="stat-row no-stats">
             <p>No previous games played</p>
           </div>
         );
       } else {
         content = (
           <>
-            <h3>Last Game</h3>
-            <div className="StatRow">
-              <span className="StatName">Total Hits</span>
-              <span className="StatValue">
+            <h3 className="stats-title">Last Game</h3>
+            <div className="stat-row">
+              <span className="stat-row-name">Total Hits</span>
+              <span className="stat-row-value">
                 {this.state.stats.lastStats.hits}
               </span>
             </div>
-            <div className="StatRow">
-              <span className="StatName">Total Misses</span>
-              <span className="StatValue">
+            <div className="stat-row">
+              <span className="stat-row-name">Total Misses</span>
+              <span className="stat-row-value">
                 {this.state.stats.lastStats.misses}
               </span>
             </div>
-            <div className="StatRow">
-              <span className="StatName">Targets Not Hit</span>
-              <span className="StatValue">
+            <div className="stat-row">
+              <span className="stat-row-name">Targets Not Hit</span>
+              <span className="stat-row-value">
                 {this.state.stats.lastStats.notHits}
               </span>
             </div>
-            <div className="StatRow">
-              <span className="StatName">Accuracy</span>
-              <span className="StatValue">
+            <div className="stat-row">
+              <span className="stat-row-name">Accuracy</span>
+              <span className="stat-row-value">
                 {this.state.stats.lastStats.average}%
               </span>
             </div>
-            <h3>All Time</h3>
-            <div className="StatRow">
-              <span className="StatName">Total Hits</span>
-              <span className="StatValue">
+            <h3 className="stats-title">All Time</h3>
+            <div className="stat-row">
+              <span className="stat-row-name">Total Hits</span>
+              <span className="stat-row-value">
                 {this.state.stats.totalStats.totalHits}
               </span>
             </div>
-            <div className="StatRow">
-              <span className="StatName">Total Misses</span>
-              <span className="StatValue">
+            <div className="stat-row">
+              <span className="stat-row-name">Total Misses</span>
+              <span className="stat-row-value">
                 {this.state.stats.totalStats.totalMisses}
               </span>
             </div>
-            <div className="StatRow">
-              <span className="StatName">Targets Not Hit</span>
-              <span className="StatValue">
+            <div className="stat-row">
+              <span className="stat-row-name">Targets Not Hit</span>
+              <span className="stat-row-value">
                 {this.state.stats.totalStats.totalNotHits}
               </span>
             </div>
-            <div className="StatRow">
-              <span className="StatName">Avg. Accuracy</span>
-              <span className="StatValue">
+            <div className="stat-row">
+              <span className="stat-row-name">Avg. Accuracy</span>
+              <span className="stat-row-value">
                 {this.state.stats.totalStats.avgAccuracy}%
               </span>
             </div>
@@ -145,7 +145,7 @@ class Stats extends React.Component {
           this.props.showStatsPage(false);
         }}
       >
-        <div className="Stats PopUp-Screen RoundBorder">
+        <div className="stats PopUp-Screen RoundBorder">
           <h2>Stats</h2>
           {content}
         </div>

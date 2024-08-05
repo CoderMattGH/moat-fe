@@ -1,0 +1,17 @@
+.error-popup {
+  margin-top: 10px;
+  display: grid;
+  gap: 10px;
+}
+
+.error-popup-msg {
+  color: white;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+}
+
+.error-popup-button {
+  margin-top: 10px;
+  width: 100%;
+}

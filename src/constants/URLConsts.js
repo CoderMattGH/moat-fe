@@ -15,16 +15,20 @@ export class URLConsts {
     return `${this.#API_PROTOCOL}://${this.#API_HOSTNAME}:${this.#API_PORT}`;
   }
 
+  static get PATH_API_LOGIN() {
+    return `${this.API_BASE_URL}/authenticate/`;
+  }
+
+  static get PATH_API_REGISTER() {
+    return `${this.API_BASE_URL}/user/`;
+  }
+
   static get PATH_API_TOP_TEN_SCORES() {
     return `${this.API_BASE_URL}/score/top-ten/`;
   }
 
   static get PATH_API_POST_SCORE() {
     return `${this.API_BASE_URL}/score/`;
-  }
-
-  static get PATH_API_LOGIN() {
-    return `${this.API_BASE_URL}/authenticate/`;
   }
 
   static get PATH_API_GET_TOTAL_STATS() {

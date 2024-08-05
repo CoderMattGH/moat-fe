@@ -14,10 +14,11 @@ import AdminPage from "./admin/AdminPage.js";
 import Cookies from "./cookies/Cookies.js";
 import Difficulty from "./constants/Difficulty.js";
 import ErrorPage from "./ErrorPage.js";
+import { Register } from "./Register.js";
 
 import { URLConsts } from "./constants/URLConsts.js";
 import * as utilFunctions from "./util/util-functions.js";
-import Validator from "./validators/Validator.js";
+import { DifficultyValidator } from "./validators/DifficultyValidator.js";
 import DeviceDetector from "./device_detection/DeviceDetector.js";
 
 import "./css/MOATApp.css";
@@ -35,6 +36,7 @@ class MOATApp extends React.Component {
     optionsPageVisible: false,
     statsPageVisible: false,
     loginPageVisible: false,
+    registerPageVisible: false,
 
     difficulty: Difficulty.DEFAULT_DIFFICULTY,
 
@@ -51,6 +53,7 @@ class MOATApp extends React.Component {
             showAboutPage={this.showAboutPage}
             showOptionsPage={this.showOptionsPage}
             showStatsPage={this.showStatsPage}
+            showRegisterPage={this.showRegisterPage}
             showLoginPage={this.showLoginPage}
             handleLogout={this.handleLogout}
           />
@@ -103,6 +106,10 @@ class MOATApp extends React.Component {
               showLoginPage={this.showLoginPage}
               handleLogin={this.handleLogin}
             />
+          ) : null}
+
+          {this.state.registerPageVisible ? (
+            <Register showRegisterPage={this.showRegisterPage} />
           ) : null}
         </div>
       </BrowserRouter>
@@ -215,6 +222,14 @@ class MOATApp extends React.Component {
     }
   };
 
+  showRegisterPage = (value) => {
+    if (value) {
+      this.setState({ registerPageVisible: true });
+    } else {
+      this.setState({ registerPageVisible: false });
+    }
+  };
+
   handleLogin = (userObj) => {
     this.context.updateUser(userObj);
   };
@@ -252,7 +267,7 @@ class MOATApp extends React.Component {
   };
 
   setDifficulty = (value) => {
-    if (Validator.validateDifficulty(value)) {
+    if (DifficultyValidator.validateDifficulty(value)) {
       this.setState({ difficulty: value });
     } else {
       this.setState({ difficulty: Difficulty.DEFAULT_DIFFICULTY });

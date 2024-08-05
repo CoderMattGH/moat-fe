@@ -66,8 +66,58 @@ h1 {
 }
 
 h2 {
-  padding: 10px;
-  font-size: max(12px, calc(12px + 0.7vw));
+  padding: 15px 5px 15px 5px;
+  margin-bottom: 5px;
+  font-size: 1.1rem;
   text-transform: uppercase;
   text-shadow: 2px 2px rgba(161, 18, 18, 0.7);
+}
+
+.button {
+  text-transform: uppercase;
+
+  border: 0;
+  background-color: rgb(201, 201, 201);
+  font-weight: bold;
+  padding: 8px 10px 8px 10px;
+  border-radius: 10px;
+}
+
+.button:disabled:hover {
+  background-color: rgb(201, 201, 201);
+}
+
+.button:hover {
+  background-color: rgb(231, 231, 231);
+}
+
+.input-text {
+  text-transform: uppercase;
+
+  font-size: 0.9rem;
+  padding: 5px 10px 5px 10px;
+  border-radius: 10px;
+  border: none;
+}
+
+.select {
+  text-transform: uppercase;
+  margin-top: 1px;
+  border: 0;
+}
+
+.form-label {
+  text-align: left;
+  text-transform: uppercase;
+
+  font-size: 0.8rem;
+  font-weight: bold;
+  color: white;
+}
+
+.form {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 20px;
+  align-items: center;
 }

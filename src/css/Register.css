@@ -1,0 +1,16 @@
+.register-button {
+  grid-column: 1 / 3;
+  width: 100%;
+}
+
+.register-err-msg {
+  grid-column: 1/3;
+  font-size: 0.8rem;
+  color: #f02121;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.register-loading-container {
+  padding: 20px 0 6px 0;
+}

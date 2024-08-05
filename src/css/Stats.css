@@ -1,29 +1,33 @@
-.Stats {
+.stats {
   text-transform: uppercase;
 }
 
-.Stats h3 {
+.stats-title {
   font-size: 0.9rem;
   color: white;
   padding: 10px 0 10px 0;
 }
 
-.StatRow {
+.stats-title:first-of-type {
+  padding-top: 0px;
+}
+
+.stat-row {
   overflow: hidden;
   padding: 5px 0 5px 0;
   font-size: 0.8rem;
 }
 
-.StatName {
+.stat-row-name {
   float: left;
 }
 
-.StatValue {
+.stat-row-value {
   float: right;
   font-weight: bold;
 }
 
-.NoStats {
+.no-stats {
   color: white;
   font-weight: bold;
 }

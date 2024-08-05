@@ -12,6 +12,7 @@ import "./css/ShootingGallery.css";
 import Difficulty from "./constants/Difficulty.js";
 import { SavingScore } from "./SavingScore.js";
 import { UserContext } from "./UserContextProvider.js";
+import { ErrorPopup } from "./ErrorPopup.js";
 
 class ShootingGallery extends React.Component {
   #CANVAS_INIT_WIDTH = 600;
@@ -66,6 +67,7 @@ class ShootingGallery extends React.Component {
 
   state = {
     savingScore: false,
+    errorMessage: null,
   };
 
   constructor(props) {
@@ -106,6 +108,12 @@ class ShootingGallery extends React.Component {
     return (
       <>
         {this.state.savingScore ? <SavingScore /> : null}
+        {this.state.errorMessage ? (
+          <ErrorPopup
+            errorMessage={this.state.errorMessage}
+            setErrorMessage={this.setErrorMessage}
+          />
+        ) : null}
 
         <div className="shootingGalleryGame" ref={this.#canvasContainerDiv}>
           <canvas
@@ -123,6 +131,10 @@ class ShootingGallery extends React.Component {
       </>
     );
   }
+
+  setErrorMessage = (errorMessage) => {
+    this.setState({ errorMessage: errorMessage });
+  };
 
   componentDidMount = () => {
     this.#initCanvas();
@@ -388,8 +400,7 @@ class ShootingGallery extends React.Component {
           console.log("Score was successfully posted!");
         })
         .catch((err) => {
-          alert("Error saving score!");
-          console.log(err);
+          this.setState({ errorMessage: "Error saving score!" });
         })
         .finally(() => {
           this.setState({ savingScore: false });

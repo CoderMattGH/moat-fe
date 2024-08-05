@@ -71,15 +71,17 @@ export class Login extends React.Component {
         this.props.handleLogin(data.user);
       })
       .catch((err) => {
-        console.log(err);
+        if (err.response && err.response.status) {
+          let status = err.response.status;
 
-        let status = err.response.status;
+          if (status === 401) {
+            this.setState({ errorMessage: "Invalid username or password!" });
 
-        if (status === 401) {
-          this.setState({ errorMessage: "Invalid username or password!" });
-        } else {
-          this.setState({ errorMessage: "Unknown error logging in!" });
+            return;
+          }
         }
+
+        this.setState({ errorMessage: "Unknown error logging in!" });
       })
       .finally(() => {
         this.setState({ loginLoading: false });
@@ -99,24 +101,28 @@ export class Login extends React.Component {
             return;
           }
 
+          if (this.state.loginLoading) {
+            return;
+          }
+
           this.props.showLoginPage(false);
         }}
       >
-        <div className="Login PopUp-Screen RoundBorder">
+        <div className="PopUp-Screen RoundBorder">
           <h2>Login</h2>
 
-          <form className="login-form" onSubmit={this.handleSubmit}>
-            <label className="login-form-label">Username:</label>
+          <form className="form form-login" onSubmit={this.handleSubmit}>
+            <label className="form-label">Username:</label>
             <input
-              className="login-input"
+              className="input-text"
               type="text"
               value={this.state.username}
               onChange={this.handleUsernameInput}
               disabled={this.state.loginLoading}
             />
-            <label className="login-form-label">Password:</label>
+            <label className="form-label">Password:</label>
             <input
-              className="login-input"
+              className="input-text"
               type="password"
               value={this.state.password}
               onChange={this.handlePasswordInput}
@@ -127,7 +133,10 @@ export class Login extends React.Component {
               <p className="login-error-msg">{this.state.errorMessage}</p>
             ) : null}
 
-            <button className="login-button" disabled={this.state.loginLoading}>
+            <button
+              className="button login-button"
+              disabled={this.state.loginLoading}
+            >
               Login
             </button>
           </form>
