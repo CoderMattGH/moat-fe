@@ -1,4 +1,4 @@
-class URLConsts {
+export class URLConsts {
   // static #PROTOCOL = 'http'
   // static #HOSTNAME = 'aim-api.codermatt.com';
   // static #RPC_PORT = 80;
@@ -14,6 +14,8 @@ class URLConsts {
   static get RPC_BASE_URL() {
     return `${this.#PROTOCOL}://${this.#HOSTNAME}:${this.#RPC_PORT}`;
   }
-}
 
-export default URLConsts;
+  static get PATH_API_TOP_TEN_SCORES() {
+    return `${this.RPC_BASE_URL}/score/top-ten/`;
+  }
+}

@@ -1,6 +1,6 @@
 import React from "react";
 
-import URLConsts from "../constants/URLConsts";
+import { URLConsts } from "../constants/URLConsts";
 
 import "./css/AdminOptionsPage.css";
 

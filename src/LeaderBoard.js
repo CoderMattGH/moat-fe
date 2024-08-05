@@ -1,11 +1,11 @@
+import axios from "axios";
+
 import React from "react";
 import Loading from "./Loading.js";
 import "./css/LeaderBoard.css";
 import "./css/PopUpContainer.css";
+import { URLConsts } from "./constants/URLConsts.js";
 
-/**
- * A class representing the LeaderBoard popup overlay.
- */
 class LeaderBoard extends React.Component {
   constructor(props) {
     console.log("Constructing LeaderBoard.");
@@ -13,17 +13,47 @@ class LeaderBoard extends React.Component {
     super(props);
   }
 
+  state = {
+    leaderBoard: [],
+    leaderBoardLoading: false,
+  };
+
+  componentDidMount = () => {
+    console.log("Mounting component!");
+
+    this.populateLeaderBoard();
+  };
+
+  populateLeaderBoard = () => {
+    console.log("Populating leaderboard data.");
+
+    this.setState({ leaderBoardLoading: true });
+
+    let url = URLConsts.PATH_API_TOP_TEN_SCORES;
+    axios
+      .get(url)
+      .then(({ data }) => {
+        this.setState({ leaderBoard: data.scores });
+      })
+      .catch((err) => {
+        console.log("Error loading leaderboard!");
+      })
+      .finally(() => {
+        this.setState({ leaderBoardLoading: false });
+      });
+  };
+
   render() {
     let i = 0;
 
     let content;
-    if (this.props.leaderBoardLoading) {
+    if (this.state.leaderBoardLoading) {
       content = <Loading />;
     } else {
-      if (this.props.leaderBoard.length) {
-        content = this.props.leaderBoard.map((entry) => (
+      if (this.state.leaderBoard.length) {
+        content = this.state.leaderBoard.map((entry) => (
           <div key={i++} className="LeaderBoardEntry">
-            <span className="LeaderBoardName">{entry.nickname}</span>
+            <span className="LeaderBoardName">{entry.username}</span>
             <span className="LeaderBoardScore">{entry.score}</span>
           </div>
         ));

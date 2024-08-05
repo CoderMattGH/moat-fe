@@ -17,7 +17,7 @@ import GameStats from "./sg_objects/GameStats.js";
 import TotalStats from "./stats/TotalStats.js";
 
 import Difficulty from "./constants/Difficulty.js";
-import URLConsts from "./constants/URLConsts.js";
+import { URLConsts } from "./constants/URLConsts.js";
 
 import Validator from "./validators/Validator.js";
 import DeviceDetector from "./device_detection/DeviceDetector.js";
@@ -25,11 +25,7 @@ import DeviceDetector from "./device_detection/DeviceDetector.js";
 import "./css/MOATApp.css";
 import ErrorPage from "./ErrorPage.js";
 
-/**
- * The main application class.
- */
 class MOATApp extends React.Component {
-  #RPC_LB_PATH = "/get-leaderboard/";
   #RPC_SEND_SCORE_PATH = "/send-score/";
 
   #cookies = new Cookies();
@@ -46,11 +42,8 @@ class MOATApp extends React.Component {
     playSounds: true,
     playMusic: false,
 
-    lastGameStats: null, // The last game's GameStats class object.
-    totalGameStats: new TotalStats(), // The TotalStats class object.
-
-    leaderBoard: [],
-    leaderBoardLoading: false,
+    lastGameStats: null,
+    totalGameStats: new TotalStats(),
   };
 
   render() {
@@ -181,9 +174,6 @@ class MOATApp extends React.Component {
       console.log("Failed loading nickname from cookie!");
   };
 
-  /**
-   * Saves the User's game Options into the cookie.
-   */
   saveOptionsToCookie = () => {
     console.log("Saving options cookies.");
 
@@ -192,9 +182,6 @@ class MOATApp extends React.Component {
     this.#cookies.setCookie("playMusic", this.state.playMusic);
   };
 
-  /**
-   * Saves the User's game Stats into the cookie.
-   */
   saveStatsToCookie = () => {
     console.log("Saving total stats cookies.");
 
@@ -216,9 +203,6 @@ class MOATApp extends React.Component {
     );
   };
 
-  /**
-   * Loads the user's total Stats from the cookie.
-   */
   loadStatsFromCookie = () => {
     console.log("Loading total stats from cookies.");
 
@@ -240,9 +224,6 @@ class MOATApp extends React.Component {
       this.state.totalGameStats.setTotalGamesPlayed(totalGamesPlayed);
   };
 
-  /**
-   * Loads the User's Options from the cookie.
-   */
   loadOptionsFromCookie = () => {
     console.log("Loading options cookies.");
 
@@ -257,41 +238,6 @@ class MOATApp extends React.Component {
     if (playSounds !== null) this.setPlaySounds(playSounds);
   };
 
-  /**
-   * Connects to the MOAT Server and fetches the Leaderboard data and populates it.
-   */
-  populateLeaderBoard = () => {
-    console.log("Populating leaderboard data.");
-
-    this.setState({ leaderBoardLoading: true });
-
-    let url = `${URLConsts.RPC_BASE_URL}${this.#RPC_LB_PATH}`;
-    const options = {
-      method: "GET",
-    };
-
-    fetch(url, options)
-      .then((response) => {
-        response
-          .json()
-          .then((data) => {
-            if (data !== null) {
-              this.setState({ leaderBoard: data });
-            }
-          })
-          .catch(() => {
-            console.log("Leaderboard JSON data is empty.");
-            this.setState({ leaderBoard: [] });
-          });
-      })
-      .catch(() => {
-        console.log("ERROR: Cannot connect to server!");
-      })
-      .finally(() => {
-        this.setState({ leaderBoardLoading: false });
-      });
-  };
-
   showAdminPage = () => {
     console.log("Trying to load Admin Page...");
 
@@ -304,11 +250,6 @@ class MOATApp extends React.Component {
     this.setState({ adminPageVisible: false });
   };
 
-  /**
-   * Saves the Stats from the last game in the cookie file and updates the current Stats in the
-   * state.
-   * @param gameStatsObj A GameStats object that contains the Stats from the last game.
-   */
   setLastGameStats = (gameStatsObj) => {
     console.log("Setting last game stats.");
 
@@ -349,12 +290,8 @@ class MOATApp extends React.Component {
     }
   };
 
-  /**
-   * Shows the LeaderBoard overlay.
-   */
   showLeaderBoard = (value) => {
     if (value === true) {
-      this.populateLeaderBoard();
       this.setState({ leaderBoardVisible: true });
     } else {
       this.setState({ leaderBoardVisible: false });
