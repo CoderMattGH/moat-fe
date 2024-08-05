@@ -1,52 +1,136 @@
 import React from "react";
+import axios from "axios";
+
 import "./css/Stats.css";
 import "./css/PopUpContainer.css";
 
-/**
- * A class representing the Stats popup overlay.
- */
+import { URLConsts } from "./constants/URLConsts";
+import { UserContext } from "./UserContextProvider";
+
+import { getAuthHeader } from "./util/util-functions";
+import Loading from "./Loading";
+
 class Stats extends React.Component {
-  render() {
-    // Boolean specifying if we have stats from the previous game.
-    let havePrvGameStats = false;
+  static contextType = UserContext;
 
-    let hits;
-    let misses;
-    let disappeared;
-    let accuracy;
+  state = {
+    stats: null,
+    statsLoading: false,
+  };
 
-    if (this.props.lastGameStats !== null) {
-      hits = this.props.lastGameStats.getHits();
-      misses = this.props.lastGameStats.getMisses();
-      disappeared = this.props.lastGameStats.getTargetsDisappeared();
+  componentDidMount = () => {
+    console.log("Mounting Stats.");
 
-      // Calculate accuracy.
-      if (hits === 0 && misses === 0)
-        // Prevent NaN.
-        accuracy = 0;
-      else accuracy = ((hits / (hits + misses)) * 100).toFixed();
+    this.getUserStats();
+  };
 
-      havePrvGameStats = true;
-    }
+  getUserStats = () => {
+    this.setState({ statsLoading: true });
 
-    // Boolean specifiying if we have stats from all previous games.
-    let haveTotalGameStats = false;
+    const totalStatsUrl = `${URLConsts.PATH_API_GET_TOTAL_STATS}${this.context.user.id}/`;
+    const lastScoreUrl = `${URLConsts.PATH_API_GET_LAST_SCORE}${this.context.user.id}/`;
 
-    let totalHits;
-    let totalMisses;
-    let totalDisappeared;
-    let totalAccuracy;
-    let totalGamesPlayed;
+    const token = this.context.user.token;
+    const headers = {
+      headers: {
+        Authorization: getAuthHeader(token),
+      },
+    };
 
-    if (this.props.totalGameStats !== null) {
-      if (this.props.totalGameStats.getTotalGamesPlayed() > 0) {
-        totalHits = this.props.totalGameStats.getTotalHits();
-        totalMisses = this.props.totalGameStats.getTotalMisses();
-        totalDisappeared = this.props.totalGameStats.getTotalDisappeared();
-        totalAccuracy = this.props.totalGameStats.getTotalAccuracy();
-        totalGamesPlayed = this.props.totalGameStats.getTotalGamesPlayed();
+    const stats = {
+      lastStats: null,
+      totalStats: null,
+    };
 
-        haveTotalGameStats = true;
+    axios
+      .get(totalStatsUrl, headers)
+      .then(({ data }) => {
+        stats.totalStats = data.score;
+
+        return axios.get(lastScoreUrl, headers);
+      })
+      .then(({ data }) => {
+        stats.lastStats = data.score;
+
+        this.setState({ stats: stats });
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        this.setState({ statsLoading: false });
+      });
+  };
+
+  // TODO: Add total games played
+  render = () => {
+    const { user } = this.context;
+
+    let content;
+    if (this.state.statsLoading) {
+      content = <Loading />;
+    } else {
+      if (!this.state.stats) {
+        content = (
+          <div className="stat-row no-stats">
+            <p>No previous games played</p>
+          </div>
+        );
+      } else {
+        content = (
+          <>
+            <h3 className="stats-title">Last Game</h3>
+            <div className="stat-row">
+              <span className="stat-row-name">Total Hits</span>
+              <span className="stat-row-value">
+                {this.state.stats.lastStats.hits}
+              </span>
+            </div>
+            <div className="stat-row">
+              <span className="stat-row-name">Total Misses</span>
+              <span className="stat-row-value">
+                {this.state.stats.lastStats.misses}
+              </span>
+            </div>
+            <div className="stat-row">
+              <span className="stat-row-name">Targets Not Hit</span>
+              <span className="stat-row-value">
+                {this.state.stats.lastStats.notHits}
+              </span>
+            </div>
+            <div className="stat-row">
+              <span className="stat-row-name">Accuracy</span>
+              <span className="stat-row-value">
+                {this.state.stats.lastStats.average}%
+              </span>
+            </div>
+            <h3 className="stats-title">All Time</h3>
+            <div className="stat-row">
+              <span className="stat-row-name">Total Hits</span>
+              <span className="stat-row-value">
+                {this.state.stats.totalStats.totalHits}
+              </span>
+            </div>
+            <div className="stat-row">
+              <span className="stat-row-name">Total Misses</span>
+              <span className="stat-row-value">
+                {this.state.stats.totalStats.totalMisses}
+              </span>
+            </div>
+            <div className="stat-row">
+              <span className="stat-row-name">Targets Not Hit</span>
+              <span className="stat-row-value">
+                {this.state.stats.totalStats.totalNotHits}
+              </span>
+            </div>
+            <div className="stat-row">
+              <span className="stat-row-name">Avg. Accuracy</span>
+              <span className="stat-row-value">
+                {this.state.stats.totalStats.avgAccuracy}%
+              </span>
+            </div>
+          </>
+        );
       }
     }
 
@@ -54,68 +138,20 @@ class Stats extends React.Component {
       <div
         className="PopUpContainer"
         onClick={(evt) => {
-          if (evt.target !== evt.currentTarget) return;
+          if (evt.target !== evt.currentTarget) {
+            return;
+          }
 
           this.props.showStatsPage(false);
         }}
       >
-        <div className="Stats PopUp-Screen RoundBorder">
+        <div className="stats PopUp-Screen RoundBorder">
           <h2>Stats</h2>
-          {havePrvGameStats ? (
-            <>
-              <h3>Last Game</h3>
-              <div className="StatRow">
-                <span className="StatName">Total Hits</span>
-                <span className="StatValue">{hits}</span>
-              </div>
-              <div className="StatRow">
-                <span className="StatName">Total Misses</span>
-                <span className="StatValue">{misses}</span>
-              </div>
-              <div className="StatRow">
-                <span className="StatName">Targets Not Hit</span>
-                <span className="StatValue">{disappeared}</span>
-              </div>
-              <div className="StatRow">
-                <span className="StatName">Accuracy</span>
-                <span className="StatValue">{accuracy}%</span>
-              </div>
-            </>
-          ) : null}
-
-          {haveTotalGameStats ? (
-            <>
-              <h3>All Time</h3>
-              <div className="StatRow">
-                <span className="StatName">Total Hits</span>
-                <span className="StatValue">{totalHits}</span>
-              </div>
-              <div className="StatRow">
-                <span className="StatName">Total Misses</span>
-                <span className="StatValue">{totalMisses}</span>
-              </div>
-              <div className="StatRow">
-                <span className="StatName">Targets Not Hit</span>
-                <span className="StatValue">{totalDisappeared}</span>
-              </div>
-              <div className="StatRow">
-                <span className="StatName">Accuracy</span>
-                <span className="StatValue">{totalAccuracy}%</span>
-              </div>
-              <div className="StatRow">
-                <span className="StatName">Games Played</span>
-                <span className="StatValue">{totalGamesPlayed}</span>
-              </div>
-            </>
-          ) : (
-            <div className="StatRow NoStats">
-              <p>No previous games played</p>
-            </div>
-          )}
+          {content}
         </div>
       </div>
     );
-  }
+  };
 }
 
 export default Stats;

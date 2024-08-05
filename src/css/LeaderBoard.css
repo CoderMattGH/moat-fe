@@ -5,11 +5,16 @@
 }
 
 .LeaderBoardEntry {
-  font-size: max(10px, calc(10px + 0.2vw));
+  font-size: 0.85rem;
+  font-weight: bold;
   color: #d2122e;
   overflow: hidden;
-  margin-top: 12px;
-  margin-bottom: 5px;
+
+  padding-bottom: 13px;
+}
+
+.LeaderBoardEntry:last-child {
+  padding-bottom: 5px;
 }
 
 .LeaderBoardEntry:hover {

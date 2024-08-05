@@ -28,7 +28,7 @@ class About extends React.Component {
           </p>
           <p>
             <span className="AboutCopyright">
-              Copyright &copy; 2023 Matt Dixon
+              Copyright &copy; 2024 Matt Dixon
             </span>
           </p>
         </div>

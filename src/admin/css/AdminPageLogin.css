@@ -18,7 +18,7 @@
 }
 
 .AdminLoginPage input[type="text"],
-input[type="password"] {
+.AdminLoginPage input[type="password"] {
   font-size: 11px;
 
   width: min(130px, calc(100px + 5vw));

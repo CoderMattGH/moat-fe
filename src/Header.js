@@ -3,9 +3,6 @@ import MainMenu from "./MainMenu.js";
 import "./css/Header.css";
 import { Link } from "react-router-dom";
 
-/**
- * A class representing the Application Header that displays the Menu and Title.
- */
 class Header extends React.Component {
   render() {
     return (
@@ -19,6 +16,9 @@ class Header extends React.Component {
             showAboutPage={this.props.showAboutPage}
             showOptionsPage={this.props.showOptionsPage}
             showStatsPage={this.props.showStatsPage}
+            showRegisterPage={this.props.showRegisterPage}
+            showLoginPage={this.props.showLoginPage}
+            handleLogout={this.props.handleLogout}
           />
         </header>
       </div>

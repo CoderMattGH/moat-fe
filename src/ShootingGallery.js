@@ -10,10 +10,10 @@ import GameStats from "./sg_objects/GameStats.js";
 import "./css/ShootingGallery.css";
 
 import Difficulty from "./constants/Difficulty.js";
+import { SavingScore } from "./SavingScore.js";
+import { UserContext } from "./UserContextProvider.js";
+import { ErrorPopup } from "./ErrorPopup.js";
 
-/**
- * The main class representing the ShootingGallery Game logic.
- */
 class ShootingGallery extends React.Component {
   #CANVAS_INIT_WIDTH = 600;
   #CANVAS_INIT_HEIGHT = 800;
@@ -53,7 +53,6 @@ class ShootingGallery extends React.Component {
   #gameEnded; // Bool indicating if the game has ended.
   #readyToRestart; // Boolean to indicate whether the game is ready to restart.
   #gameLength; // Time in seconds for duration of game.
-  #difficulty;
   #targetsPerSecond; // Number of targets to spawn per second.
 
   #animFrameReqId; // Animation frame request ID for cancelling animation.
@@ -64,7 +63,12 @@ class ShootingGallery extends React.Component {
   #prevHeight;
   #prevWidth;
 
-  state = {};
+  static contextType = UserContext;
+
+  state = {
+    savingScore: false,
+    errorMessage: null,
+  };
 
   constructor(props) {
     console.log("ShootingGallery constructor called!");
@@ -84,7 +88,8 @@ class ShootingGallery extends React.Component {
 
     this.#gameStats = new GameStats();
 
-    this.#gameLength = 45;
+    // this.#gameLength = 45;
+    this.#gameLength = 10;
 
     this.#gameStarted = false;
     this.#gameEnded = false;
@@ -101,21 +106,35 @@ class ShootingGallery extends React.Component {
 
   render() {
     return (
-      <div className="shootingGalleryGame" ref={this.#canvasContainerDiv}>
-        <canvas
-          width={this.#CANVAS_INIT_WIDTH}
-          height={this.#CANVAS_INIT_HEIGHT}
-          id="shootingGalleryCanvas"
-          className="RoundBorder"
-          ref={this.#canvas}
-          onClick={(evt) => {
-            evt.preventDefault();
-            this.#handleClick(evt);
-          }}
-        ></canvas>
-      </div>
+      <>
+        {this.state.savingScore ? <SavingScore /> : null}
+        {this.state.errorMessage ? (
+          <ErrorPopup
+            errorMessage={this.state.errorMessage}
+            setErrorMessage={this.setErrorMessage}
+          />
+        ) : null}
+
+        <div className="shootingGalleryGame" ref={this.#canvasContainerDiv}>
+          <canvas
+            width={this.#CANVAS_INIT_WIDTH}
+            height={this.#CANVAS_INIT_HEIGHT}
+            id="shootingGalleryCanvas"
+            className="RoundBorder"
+            ref={this.#canvas}
+            onClick={(evt) => {
+              evt.preventDefault();
+              this.#handleClick(evt);
+            }}
+          ></canvas>
+        </div>
+      </>
     );
   }
+
+  setErrorMessage = (errorMessage) => {
+    this.setState({ errorMessage: errorMessage });
+  };
 
   componentDidMount = () => {
     this.#initCanvas();
@@ -125,10 +144,6 @@ class ShootingGallery extends React.Component {
     window.addEventListener("resize", this.#resizeEventListener);
   };
 
-  /**
-   * A function essentially representing the object's destructor.
-   * Cleans up the object allowing graceful unmounting from the DOM.
-   */
   componentWillUnmount = () => {
     console.log("Cleaning up ShootingGallery before unmount.");
 
@@ -161,9 +176,6 @@ class ShootingGallery extends React.Component {
     this.#initCanvas();
   };
 
-  /**
-   * Initiates the game's Canvas object.
-   */
   #initCanvas = () => {
     console.log("Initialising canvas.");
 
@@ -190,9 +202,6 @@ class ShootingGallery extends React.Component {
     this.#resetTimerAndScore();
   };
 
-  /**
-   * Resets the game's Score and Timer.
-   */
   #resetTimerAndScore = () => {
     this.#sGTimer = new SGTimer(
       this.#canvas.current.width - 10,
@@ -206,10 +215,6 @@ class ShootingGallery extends React.Component {
     );
   };
 
-  /**
-   * Gets called whenever the browser has sensed that the canvas has been resized.
-   * @param evt An Event object created by the resize event.
-   */
   #resizeEventListener = (evt) => {
     console.log("SG Container div was resized.");
     this.#handleResizeEvent = true;
@@ -217,11 +222,6 @@ class ShootingGallery extends React.Component {
     this.#initCanvas();
   };
 
-  /**
-   * Resizes the canvas object to the specified width and heigh in pixels.
-   * @param width A integer representing the width in pixels.
-   * @param height A integer representing the height in pixels.
-   */
   #resizeCanvas = (width, height) => {
     this.#prevHeight = this.#canvas.current.height;
     this.#prevWidth = this.#canvas.current.width;
@@ -233,11 +233,6 @@ class ShootingGallery extends React.Component {
     console.log("Resized canvas width: " + this.#canvas.current.width);
   };
 
-  /**
-   * Sets the game's difficulty.
-   * @example setDifficulty(Difficulty.EASY_DIFFICULTY);
-   * @param value A Difficulty to set the game to.
-   */
   setDifficulty = (value) => {
     let difficulty;
     try {
@@ -249,15 +244,10 @@ class ShootingGallery extends React.Component {
 
     let difficulties = Difficulty.getDifficulties();
 
-    this.#difficulty = difficulty;
     this.#targetsPerSecond = difficulties.get(difficulty).tps;
     console.log(difficulties.get(difficulty).name + " difficulty selected.");
   };
 
-  /**
-   * Draws the background.  This drawing function should be called before any other drawing
-   * functions.
-   */
   #drawBackground = () => {
     if (this.#canvas.current !== null) {
       this.#context.fillStyle = "black";
@@ -270,10 +260,6 @@ class ShootingGallery extends React.Component {
     }
   };
 
-  /**
-   * Draws a transparent overlay over the entire canvas.  Useful for dimming in order to draw
-   * something over the top.
-   */
   #drawBackgroundOverlay = () => {
     if (this.#canvas.current !== null) {
       this.#context.fillStyle = "rgba(0,0,0,0.5)";
@@ -298,9 +284,6 @@ class ShootingGallery extends React.Component {
     );
   };
 
-  /**
-   * Draws the messages to display after the User has finished a Game round.
-   */
   #drawFinishedMessage = () => {
     let message = "TIMER EXPIRED";
     let messageYPos = this.#canvas.current.height / 2 - 50;
@@ -325,15 +308,6 @@ class ShootingGallery extends React.Component {
     );
   };
 
-  /**
-   * Adds a shadow effect to the supplied text and draws it on the current context.
-   * @param message A String representing the message to display.
-   * @param x An integer representing the x coordinate.
-   * @param y An integer representing the y coordinate.
-   * @param font A String representing the font style.
-   * @param colour A String representing the fillStyle canvas property for the text colour.
-   * @param shadowColour A string representing the fillStyle canvas property for the shadow colour.
-   */
   #drawShadowedText = (message, x, y, font, colour, shadowColour) => {
     // Draw drop shadow.
     this.#context.font = font;
@@ -350,9 +324,6 @@ class ShootingGallery extends React.Component {
     this.#context.fillText(message, x, y);
   };
 
-  /**
-   * Starts the Game's animation.
-   */
   #beginAnimation = () => {
     console.log("Starting animation!");
     this.#sounds.playMusic();
@@ -361,9 +332,6 @@ class ShootingGallery extends React.Component {
     this.#updateProgress();
   };
 
-  /**
-   * Restarts the Game.
-   */
   #restartGame = () => {
     if (this.#readyToRestart === true) {
       this.#sounds.stopMusic();
@@ -395,10 +363,8 @@ class ShootingGallery extends React.Component {
     }
   };
 
-  /**
-   * A function to call once a Game Round has ended.
-   */
   #finishGame = () => {
+    const user = this.context.user;
     this.#gameEnded = true;
 
     // End animation.
@@ -414,14 +380,32 @@ class ShootingGallery extends React.Component {
     this.#drawFinishedMessage();
     this.#sleepSetReadyToStart();
 
-    this.props.setLastGameStats(this.#gameStats);
     console.log(
       `Hits: ${this.#gameStats.getHits()} Misses: ${this.#gameStats.getMisses()} ` +
         `Disappeared: ${this.#gameStats.getTargetsDisappeared()}`
     );
 
-    // Send score to server.
-    this.props.sendScoreToServer(this.#score.getPlayerScore());
+    if (user) {
+      this.setState({ savingScore: true });
+
+      this.props
+        .sendScoreToServer(
+          this.#score.getPlayerScore(),
+          this.#gameStats.getHits(),
+          this.#gameStats.getMisses(),
+          this.#gameStats.getTargetsDisappeared(),
+          user
+        )
+        .then(({ data }) => {
+          console.log("Score was successfully posted!");
+        })
+        .catch((err) => {
+          this.setState({ errorMessage: "Error saving score!" });
+        })
+        .finally(() => {
+          this.setState({ savingScore: false });
+        });
+    }
 
     console.log("Exiting finishGame() function!");
   };
@@ -449,12 +433,6 @@ class ShootingGallery extends React.Component {
     console.log("Game is now ready to restart!");
   };
 
-  /**
-   * Updates animations on the Game's canvas object.
-   * Gets called in relation to refresh rate.
-   * For example, a 144hz refresh rate will call the callback function 144 times per second.
-   * @param timestamp An integer representing the current Game Time in milliseconds.
-   */
   #updateProgress = (timestamp) => {
     if (timestamp !== undefined) {
       if (this.#startTimestamp === undefined) {
@@ -518,11 +496,6 @@ class ShootingGallery extends React.Component {
     return gameTime;
   };
 
-  /**
-   * Returns the Target radius based on the current Game canvas size.
-   * When the Game canvas is resized, then the targets are scaled appropriately.
-   * @returns A number representing the current Target Radius.
-   */
   #getTargetRadius = () => {
     let targetRadius = this.#DEF_TARGET_RADIUS * this.#getAvgResizeRatio();
 
@@ -561,12 +534,6 @@ class ShootingGallery extends React.Component {
       return this.#canvas.current.width / this.#CANVAS_INIT_WIDTH;
   };
 
-  /**
-   * Creates a Round Target object with random position coordinates.
-   * Note that this function does not draw the object, but adds it to the list of
-   * other Round Targets to be drawn.
-   * @param timestamp An integer representing the current Game Time in milliseconds.
-   */
   #createRoundTarget = (timestamp) => {
     if (this.#canvas.current !== null) {
       let targetRadius = this.#getTargetRadius();
@@ -740,10 +707,6 @@ class ShootingGallery extends React.Component {
     return coorObj;
   };
 
-  /**
-   * A function to handle the User clicking on the Game canvas.
-   * @param event An Event object.
-   */
   #handleClick = (event) => {
     if (this.#gameStarted === false) {
       this.#gameStarted = true;

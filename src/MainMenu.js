@@ -1,11 +1,13 @@
 import React from "react";
 import "./css/MainMenu.css";
+import { UserContext } from "./UserContextProvider";
 
-/**
- * A class representing the Main Menu.
- */
 class MainMenu extends React.Component {
+  static contextType = UserContext;
+
   render() {
+    const { user } = this.context;
+
     return (
       <div className="MainMenu RoundBorder">
         <ul>
@@ -33,19 +35,61 @@ class MainMenu extends React.Component {
             </a>
           </li>
 
-          <li>
-            <a
-              href="/"
-              onClick={(evt) => {
-                evt.preventDefault();
-                this.props.showStatsPage(true);
-              }}
-            >
-              Stats
-            </a>
-          </li>
+          {user ? (
+            <li>
+              <a
+                href="/"
+                onClick={(evt) => {
+                  evt.preventDefault();
+                  this.props.showStatsPage(true);
+                }}
+              >
+                Stats
+              </a>
+            </li>
+          ) : null}
 
-          <li>
+          {user ? (
+            <li>
+              <a
+                href="/"
+                onClick={(evt) => {
+                  evt.preventDefault();
+                  this.props.handleLogout();
+                }}
+              >
+                Logout [{user.username}]
+              </a>
+            </li>
+          ) : (
+            <>
+              <li>
+                <a
+                  href="/"
+                  onClick={(evt) => {
+                    evt.preventDefault();
+                    this.props.showRegisterPage(true);
+                  }}
+                >
+                  Register
+                </a>
+              </li>
+
+              <li>
+                <a
+                  href="/"
+                  onClick={(evt) => {
+                    evt.preventDefault();
+                    this.props.showLoginPage(true);
+                  }}
+                >
+                  Login
+                </a>
+              </li>
+            </>
+          )}
+
+          {/* <li>
             <a
               href="/"
               onClick={(evt) => {
@@ -55,7 +99,7 @@ class MainMenu extends React.Component {
             >
               About
             </a>
-          </li>
+          </li> */}
         </ul>
       </div>
     );
