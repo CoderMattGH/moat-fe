@@ -1,9 +1,6 @@
 import React from "react";
 import "./css/MainMenu.css";
 
-/**
- * A class representing the Main Menu.
- */
 class MainMenu extends React.Component {
   render() {
     return (
@@ -45,7 +42,33 @@ class MainMenu extends React.Component {
             </a>
           </li>
 
-          <li>
+          {this.props.user ? (
+            <li>
+              <a
+                href="/"
+                onClick={(evt) => {
+                  evt.preventDefault();
+                  this.props.handleLogout();
+                }}
+              >
+                Logout
+              </a>
+            </li>
+          ) : (
+            <li>
+              <a
+                href="/"
+                onClick={(evt) => {
+                  evt.preventDefault();
+                  this.props.showLoginPage(true);
+                }}
+              >
+                Login
+              </a>
+            </li>
+          )}
+
+          {/* <li>
             <a
               href="/"
               onClick={(evt) => {
@@ -55,7 +78,7 @@ class MainMenu extends React.Component {
             >
               About
             </a>
-          </li>
+          </li> */}
         </ul>
       </div>
     );

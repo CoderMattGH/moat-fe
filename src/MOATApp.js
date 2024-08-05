@@ -9,12 +9,10 @@ import LeaderBoard from "./LeaderBoard.js";
 import About from "./About.js";
 import Options from "./Options.js";
 import Stats from "./Stats.js";
-import WelcomeScreen from "./WelcomeScreen.js";
+import { Login } from "./Login.js";
 import AdminPage from "./admin/AdminPage.js";
 
 import Cookies from "./cookies/Cookies.js";
-import GameStats from "./sg_objects/GameStats.js";
-import TotalStats from "./stats/TotalStats.js";
 
 import Difficulty from "./constants/Difficulty.js";
 import { URLConsts } from "./constants/URLConsts.js";
@@ -26,24 +24,21 @@ import "./css/MOATApp.css";
 import ErrorPage from "./ErrorPage.js";
 
 class MOATApp extends React.Component {
-  #RPC_SEND_SCORE_PATH = "/send-score/";
-
   #cookies = new Cookies();
 
   state = {
+    user: null,
+
     leaderBoardVisible: false,
     aboutPageVisible: false,
     optionsPageVisible: false,
     statsPageVisible: false,
+    loginPageVisible: false,
 
-    nickname: "",
     difficulty: Difficulty.DEFAULT_DIFFICULTY,
 
     playSounds: true,
     playMusic: false,
-
-    lastGameStats: null,
-    totalGameStats: new TotalStats(),
   };
 
   render() {
@@ -55,6 +50,9 @@ class MOATApp extends React.Component {
             showAboutPage={this.showAboutPage}
             showOptionsPage={this.showOptionsPage}
             showStatsPage={this.showStatsPage}
+            showLoginPage={this.showLoginPage}
+            handleLogout={this.handleLogout}
+            user={this.state.user}
           />
 
           <Routes>
@@ -74,7 +72,7 @@ class MOATApp extends React.Component {
             <Route path="*" element={<ErrorPage />} />
           </Routes>
 
-          <Footer showAdminPage={this.showAdminPage} />
+          <Footer />
 
           {this.state.leaderBoardVisible ? (
             <LeaderBoard
@@ -103,17 +101,15 @@ class MOATApp extends React.Component {
               setPlayMusic={this.setPlayMusic}
               playSounds={this.state.playSounds}
               playMusic={this.state.playMusic}
-              nickname={this.state.nickname}
-              setNickname={this.setNickname}
               difficulty={this.state.difficulty}
               setDifficulty={this.setDifficulty}
             />
           ) : null}
 
-          {!Validator.validateNickname(this.state.nickname) ? (
-            <WelcomeScreen
-              setNickname={this.setNickname}
-              showWelcomeScreen={this.showWelcomeScreen}
+          {this.state.loginPageVisible ? (
+            <Login
+              showLoginPage={this.showLoginPage}
+              handleLogin={this.handleLogin}
             />
           ) : null}
         </div>
@@ -124,9 +120,6 @@ class MOATApp extends React.Component {
   componentDidMount = () => {
     console.log("Loading cookies.");
 
-    this.loadStatsFromCookie();
-
-    this.loadNicknameFromCookie();
     this.loadOptionsFromCookie();
 
     // If mobile device, then disable sounds.
@@ -139,11 +132,6 @@ class MOATApp extends React.Component {
   };
 
   componentDidUpdate(prevProps, prevState) {
-    // If nickname changed, then update the cookie.
-    if (prevState.nickname !== this.state.nickname) {
-      this.saveNicknameToCookie();
-    }
-
     let optionsHaveChanged = false;
 
     if (prevState.playSounds !== this.state.playSounds) {
@@ -161,67 +149,12 @@ class MOATApp extends React.Component {
     if (optionsHaveChanged) this.saveOptionsToCookie();
   }
 
-  saveNicknameToCookie = () => {
-    this.#cookies.setCookie("nickname", this.state.nickname);
-  };
-
-  loadNicknameFromCookie = () => {
-    console.log("Loading nickname from cookie.");
-
-    let nickname = this.#cookies.getCookie("nickname");
-
-    if (!this.setNickname(nickname))
-      console.log("Failed loading nickname from cookie!");
-  };
-
   saveOptionsToCookie = () => {
     console.log("Saving options cookies.");
 
     this.#cookies.setCookie("difficulty", this.state.difficulty);
     this.#cookies.setCookie("playSounds", this.state.playSounds);
     this.#cookies.setCookie("playMusic", this.state.playMusic);
-  };
-
-  saveStatsToCookie = () => {
-    console.log("Saving total stats cookies.");
-
-    this.#cookies.setCookie(
-      "totalHits",
-      this.state.totalGameStats.getTotalHits()
-    );
-    this.#cookies.setCookie(
-      "totalMisses",
-      this.state.totalGameStats.getTotalMisses()
-    );
-    this.#cookies.setCookie(
-      "totalDisappeared",
-      this.state.totalGameStats.getTotalDisappeared()
-    );
-    this.#cookies.setCookie(
-      "totalGamesPlayed",
-      this.state.totalGameStats.getTotalGamesPlayed()
-    );
-  };
-
-  loadStatsFromCookie = () => {
-    console.log("Loading total stats from cookies.");
-
-    let totalHits = this.#cookies.getCookie("totalHits");
-    if (totalHits !== null) {
-      this.state.totalGameStats.setTotalHits(totalHits);
-    }
-
-    let totalMisses = this.#cookies.getCookie("totalMisses");
-    if (totalMisses !== null)
-      this.state.totalGameStats.setTotalMisses(totalMisses);
-
-    let totalDisappeared = this.#cookies.getCookie("totalDisappeared");
-    if (totalDisappeared !== null)
-      this.state.totalGameStats.setTotalDisappeared(totalDisappeared);
-
-    let totalGamesPlayed = this.#cookies.getCookie("totalGamesPlayed");
-    if (totalGamesPlayed !== null)
-      this.state.totalGameStats.setTotalGamesPlayed(totalGamesPlayed);
   };
 
   loadOptionsFromCookie = () => {
@@ -250,102 +183,54 @@ class MOATApp extends React.Component {
     this.setState({ adminPageVisible: false });
   };
 
-  setLastGameStats = (gameStatsObj) => {
-    console.log("Setting last game stats.");
-
-    if (!gameStatsObj === typeof GameStats) {
-      console.log("Error: Not GameStats object.");
-
-      return;
-    } else {
-      this.setState({ lastGameStats: gameStatsObj });
-
-      // Update total game stats.
-      if (this.state.totalGameStats !== null) {
-        this.state.totalGameStats.incTotalHits(gameStatsObj.getHits());
-        this.state.totalGameStats.incTotalMisses(gameStatsObj.getMisses());
-        this.state.totalGameStats.incTotalDisappeared(
-          gameStatsObj.getTargetsDisappeared()
-        );
-        this.state.totalGameStats.incTotalGamesPlayed(1);
-
-        this.saveStatsToCookie();
-      }
-    }
-  };
-
-  /**
-   * Sets the TotalStats object in state representing the User's total Stats.
-   * @param totalStatsObj A TotalStats object to save into state.
-   */
-  setTotalGameStats = (totalStatsObj) => {
-    console.log("Setting total game stats.");
-
-    if (!totalStatsObj === typeof TotalStats) {
-      console.log("Error: Not TotalStats object.");
-
-      return;
-    } else {
-      this.setState({ totalGameStats: totalStatsObj });
-    }
-  };
-
   showLeaderBoard = (value) => {
-    if (value === true) {
+    if (value) {
       this.setState({ leaderBoardVisible: true });
     } else {
       this.setState({ leaderBoardVisible: false });
     }
   };
 
-  /**
-   * Shows the Stats overlay.
-   */
   showStatsPage = (value) => {
-    if (value === true) {
+    if (value) {
       this.setState({ statsPageVisible: true });
     } else {
       this.setState({ statsPageVisible: false });
     }
   };
 
-  /**
-   * Shows the About overlay.
-   */
   showAboutPage = (value) => {
-    if (value === true) {
+    if (value) {
       this.setState({ aboutPageVisible: true });
     } else {
       this.setState({ aboutPageVisible: false });
     }
   };
 
-  /**
-   * Shows the Options overlay.
-   */
   showOptionsPage = (value) => {
-    if (value === true) {
+    if (value) {
       this.setState({ optionsPageVisible: true });
     } else {
       this.setState({ optionsPageVisible: false });
     }
   };
 
-  /**
-   * Shows the screen
-   */
-  showWelcomeScreen = (value) => {
-    if (value === true) {
-      this.setState({ welcomeScreenVisible: true });
+  showLoginPage = (value) => {
+    if (value) {
+      this.setState({ loginPageVisible: true });
     } else {
-      this.setState({ welcomeScreenVisible: false });
+      this.setState({ loginPageVisible: false });
     }
   };
 
-  /**
-   * Sets whether the game should play sounds or not.
-   * @param value A Boolean value indicating true or false.
-   */
+  handleLogin = (userObj) => {
+    this.setState({ user: userObj });
+  };
+
+  handleLogout = () => {
+    this.setState({ user: null });
+  };
+
   setPlaySounds = (value) => {
     if (DeviceDetector.isMobileDevice()) {
       this.setState({ playSounds: false });
@@ -360,10 +245,6 @@ class MOATApp extends React.Component {
     }
   };
 
-  /**
-   * Sets whether the game should play music or not.
-   * @param value A Boolean value indicating true or false.
-   */
   setPlayMusic = (value) => {
     if (DeviceDetector.isMobileDevice()) {
       this.setState({ playMusic: false });
@@ -378,47 +259,19 @@ class MOATApp extends React.Component {
     }
   };
 
-  /**
-   * Sets the game Difficulty.
-   * @example setDifficulty(Difficulty.MAX_DIFFICULTY);
-   * @param A Difficulty object representing the difficulty.
-   */
   setDifficulty = (value) => {
     if (Validator.validateDifficulty(value))
       this.setState({ difficulty: value });
     else this.setState({ difficulty: Difficulty.DEFAULT_DIFFICULTY });
   };
 
-  /**
-   * Validates and sets the User's Nickname.  If validation fails, then the Nickname will not
-   * be changed.
-   * @param name A String representing the User's Nickname.
-   * @returns A Boolean object indicating whether the request was successful or not.
-   */
-  setNickname = (name) => {
-    console.log("Setting nickname.");
-
-    if (Validator.validateNickname(name)) {
-      this.setState({ nickname: name });
-
-      return true;
-    } else {
-      return false;
-    }
-  };
-
-  /**
-   * Sends the specified Score to the MOAT Server to register it.
-   * @param score A int value representing the Score.
-   */
   sendScoreToServer = (score) => {
     console.log("Sending score to server.");
 
-    let url = `${URLConsts.RPC_BASE_URL}${this.#RPC_SEND_SCORE_PATH}`;
+    let url = URLConsts.PATH_API_POST_SCORE;
 
     let scoreObj = {
       score: score,
-      nickname: this.state.nickname,
     };
 
     const fetchOptions = {

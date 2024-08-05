@@ -1,6 +1,3 @@
-.Options {
-}
-
 .Option {
   overflow: hidden;
 }
@@ -28,26 +25,6 @@
 .Option input[type="checkbox"] {
   border: 0px;
   margin-right: 0px;
-}
-
-.Option input[type="text"] {
-  font-size: 11px;
-  width: 100px;
-  border: 0px;
-  text-align: center;
-  margin-top: 1px;
-}
-
-.NicknameErrorMsg {
-  overflow: hidden;
-  margin: 0;
-}
-
-.NicknameErrorMsg p {
-  margin-top: 5px;
-  margin-bottom: 0px;
-  font-size: 10px;
-  float: right;
 }
 
 .Option select {
