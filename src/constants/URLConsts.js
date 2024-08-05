@@ -26,4 +26,12 @@ export class URLConsts {
   static get PATH_API_LOGIN() {
     return `${this.API_BASE_URL}/authenticate/`;
   }
+
+  static get PATH_API_GET_TOTAL_STATS() {
+    return `${this.API_BASE_URL}/score/avg/`;
+  }
+
+  static get PATH_API_GET_LAST_SCORE() {
+    return `${this.API_BASE_URL}/score/last/`;
+  }
 }

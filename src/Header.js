@@ -18,7 +18,6 @@ class Header extends React.Component {
             showStatsPage={this.props.showStatsPage}
             showLoginPage={this.props.showLoginPage}
             handleLogout={this.props.handleLogout}
-            user={this.props.user}
           />
         </header>
       </div>

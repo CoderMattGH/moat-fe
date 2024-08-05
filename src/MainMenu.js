@@ -1,8 +1,13 @@
 import React from "react";
 import "./css/MainMenu.css";
+import { UserContext } from "./UserContextProvider";
 
 class MainMenu extends React.Component {
+  static contextType = UserContext;
+
   render() {
+    const { user } = this.context;
+
     return (
       <div className="MainMenu RoundBorder">
         <ul>
@@ -30,19 +35,21 @@ class MainMenu extends React.Component {
             </a>
           </li>
 
-          <li>
-            <a
-              href="/"
-              onClick={(evt) => {
-                evt.preventDefault();
-                this.props.showStatsPage(true);
-              }}
-            >
-              Stats
-            </a>
-          </li>
+          {user ? (
+            <li>
+              <a
+                href="/"
+                onClick={(evt) => {
+                  evt.preventDefault();
+                  this.props.showStatsPage(true);
+                }}
+              >
+                Stats
+              </a>
+            </li>
+          ) : null}
 
-          {this.props.user ? (
+          {user ? (
             <li>
               <a
                 href="/"

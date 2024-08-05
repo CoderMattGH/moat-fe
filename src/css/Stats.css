@@ -3,14 +3,15 @@
 }
 
 .Stats h3 {
-  font-size: max(10px, calc(10px + 0.2vw));
+  font-size: 0.9rem;
   color: white;
+  padding: 10px 0 10px 0;
 }
 
 .StatRow {
   overflow: hidden;
-  margin-top: 5px;
-  font-size: max(9px, calc(9px + 0.2vw));
+  padding: 5px 0 5px 0;
+  font-size: 0.8rem;
 }
 
 .StatName {

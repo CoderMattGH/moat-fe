@@ -1,5 +1,5 @@
 import React from "react";
-
+import axios from "axios";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Header from "./Header.js";
@@ -11,24 +11,25 @@ import Options from "./Options.js";
 import Stats from "./Stats.js";
 import { Login } from "./Login.js";
 import AdminPage from "./admin/AdminPage.js";
-
 import Cookies from "./cookies/Cookies.js";
-
 import Difficulty from "./constants/Difficulty.js";
-import { URLConsts } from "./constants/URLConsts.js";
+import ErrorPage from "./ErrorPage.js";
 
+import { URLConsts } from "./constants/URLConsts.js";
+import * as utilFunctions from "./util/util-functions.js";
 import Validator from "./validators/Validator.js";
 import DeviceDetector from "./device_detection/DeviceDetector.js";
 
 import "./css/MOATApp.css";
-import ErrorPage from "./ErrorPage.js";
+
+import { UserContext } from "./UserContextProvider.js";
 
 class MOATApp extends React.Component {
+  static contextType = UserContext;
+
   #cookies = new Cookies();
 
   state = {
-    user: null,
-
     leaderBoardVisible: false,
     aboutPageVisible: false,
     optionsPageVisible: false,
@@ -52,7 +53,6 @@ class MOATApp extends React.Component {
             showStatsPage={this.showStatsPage}
             showLoginPage={this.showLoginPage}
             handleLogout={this.handleLogout}
-            user={this.state.user}
           />
 
           <Routes>
@@ -75,11 +75,7 @@ class MOATApp extends React.Component {
           <Footer />
 
           {this.state.leaderBoardVisible ? (
-            <LeaderBoard
-              showLeaderBoard={this.showLeaderBoard}
-              leaderBoardLoading={this.state.leaderBoardLoading}
-              leaderBoard={this.state.leaderBoard}
-            />
+            <LeaderBoard showLeaderBoard={this.showLeaderBoard} />
           ) : null}
 
           {this.state.aboutPageVisible ? (
@@ -87,11 +83,7 @@ class MOATApp extends React.Component {
           ) : null}
 
           {this.state.statsPageVisible ? (
-            <Stats
-              showStatsPage={this.showStatsPage}
-              lastGameStats={this.state.lastGameStats}
-              totalGameStats={this.state.totalGameStats}
-            />
+            <Stats showStatsPage={this.showStatsPage} />
           ) : null}
 
           {this.state.optionsPageVisible ? (
@@ -224,11 +216,11 @@ class MOATApp extends React.Component {
   };
 
   handleLogin = (userObj) => {
-    this.setState({ user: userObj });
+    this.context.updateUser(userObj);
   };
 
   handleLogout = () => {
-    this.setState({ user: null });
+    this.context.updateUser(null);
   };
 
   setPlaySounds = (value) => {
@@ -260,45 +252,31 @@ class MOATApp extends React.Component {
   };
 
   setDifficulty = (value) => {
-    if (Validator.validateDifficulty(value))
+    if (Validator.validateDifficulty(value)) {
       this.setState({ difficulty: value });
-    else this.setState({ difficulty: Difficulty.DEFAULT_DIFFICULTY });
+    } else {
+      this.setState({ difficulty: Difficulty.DEFAULT_DIFFICULTY });
+    }
   };
 
-  sendScoreToServer = (score) => {
+  sendScoreToServer = (score, hits, misses, notHits, user) => {
     console.log("Sending score to server.");
 
     let url = URLConsts.PATH_API_POST_SCORE;
 
     let scoreObj = {
+      userId: user.id,
       score: score,
+      hits: hits,
+      misses: misses,
+      notHits: notHits,
     };
 
-    const fetchOptions = {
-      method: "POST",
-      body: JSON.stringify(scoreObj),
-      headers: {
-        "Content-Type": "application/json",
-      },
+    const headers = {
+      headers: utilFunctions.getAuthHeader(user.token),
     };
 
-    fetch(url, fetchOptions)
-      .then((response) => {
-        response
-          .json()
-          .then((wasHighScore) => {
-            // TODO: If was a high score then do something here.  Celebration animation?
-            if (wasHighScore) {
-              console.log("High score registered!");
-            }
-          })
-          .catch(() => {
-            console.log("ERROR: Cannot parse response from server.");
-          });
-      })
-      .catch(() => {
-        console.log("ERROR: Cannot connect to server.");
-      });
+    return axios.post(url, scoreObj, headers);
   };
 }
 
