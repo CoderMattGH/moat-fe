@@ -69,6 +69,7 @@ export class MOATApp extends React.Component {
                   playSounds={this.state.playSounds}
                   setLastGameStats={this.setLastGameStats}
                   sendScoreToServer={this.sendScoreToServer}
+                  handleLogout={this.handleLogout}
                 />
               }
             />
@@ -106,11 +107,15 @@ export class MOATApp extends React.Component {
             <Login
               showLoginPage={this.showLoginPage}
               handleLogin={this.handleLogin}
+              saveUserToCookie={this.saveUserToCookie}
             />
           ) : null}
 
           {this.state.registerPageVisible ? (
-            <Register showRegisterPage={this.showRegisterPage} />
+            <Register
+              showRegisterPage={this.showRegisterPage}
+              handleLogin={this.handleLogin}
+            />
           ) : null}
         </div>
       </BrowserRouter>
@@ -119,6 +124,7 @@ export class MOATApp extends React.Component {
 
   componentDidMount = () => {
     this.loadOptionsFromCookie();
+    this.loadUserFromCookie();
 
     // If mobile device, then disable sounds.
     if (DeviceDetector.isMobileDevice()) {
@@ -144,7 +150,9 @@ export class MOATApp extends React.Component {
       optionsHaveChanged = true;
     }
 
-    if (optionsHaveChanged) this.saveOptionsToCookie();
+    if (optionsHaveChanged) {
+      this.saveOptionsToCookie();
+    }
   }
 
   saveOptionsToCookie = () => {
@@ -162,11 +170,50 @@ export class MOATApp extends React.Component {
     let playSounds = this.#cookies.getCookie("playSounds");
     let playMusic = this.#cookies.getCookie("playMusic");
 
-    if (difficulty !== null) this.setDifficulty(difficulty);
+    if (difficulty !== null) {
+      this.setDifficulty(difficulty);
+    }
 
-    if (playMusic !== null) this.setPlayMusic(playMusic);
+    if (playMusic !== null) {
+      this.setPlayMusic(playMusic);
+    }
 
-    if (playSounds !== null) this.setPlaySounds(playSounds);
+    if (playSounds !== null) {
+      this.setPlaySounds(playSounds);
+    }
+  };
+
+  saveUserToCookie = (userObj) => {
+    Logger.debug("Saving user to cookies.");
+
+    const json = JSON.stringify(userObj);
+
+    this.#cookies.setCookie("user", json);
+  };
+
+  loadUserFromCookie = () => {
+    Logger.debug("Loading user from cookies.");
+
+    let str = this.#cookies.getCookie("user");
+
+    if (!str) {
+      return;
+    }
+
+    const { updateUser } = this.context;
+
+    try {
+      let userObj = JSON.parse(str);
+
+      // TODO: More robust validation.
+      if (userObj.role && userObj.id && userObj.username && userObj.token) {
+        updateUser(userObj);
+      }
+    } catch (err) {
+      Logger.debug("Error parsing user from cookie!");
+
+      return;
+    }
   };
 
   showAdminPage = () => {
@@ -227,10 +274,12 @@ export class MOATApp extends React.Component {
 
   handleLogin = (userObj) => {
     this.context.updateUser(userObj);
+    this.saveUserToCookie(userObj);
   };
 
   handleLogout = () => {
     this.context.updateUser(null);
+    this.#cookies.deleteCookie("user");
   };
 
   setPlaySounds = (value) => {
@@ -270,7 +319,7 @@ export class MOATApp extends React.Component {
   };
 
   sendScoreToServer = (score, hits, misses, notHits, user) => {
-    Logger.debug("Posting score to server");
+    Logger.debug("Posting score to server.");
 
     let url = UrlConsts.PATH_API_POST_SCORE;
 

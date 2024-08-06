@@ -13,6 +13,7 @@ export class Body extends React.Component {
           playSounds={this.props.playSounds}
           setLastGameStats={this.props.setLastGameStats}
           sendScoreToServer={this.props.sendScoreToServer}
+          handleLogout={this.props.handleLogout}
         />
       </div>
     );

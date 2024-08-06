@@ -450,7 +450,15 @@ export class ShootingGallery extends React.Component {
           Logger.debug("Score was successfully posted!");
         })
         .catch((err) => {
-          this.setState({ errorMessage: "Error saving score!" });
+          if (err.response && err.response.status === 401) {
+            this.setState({
+              errorMessage: "Your credentials are invalid or expired!",
+            });
+
+            this.props.handleLogout();
+          } else {
+            this.setState({ errorMessage: "Error saving score!" });
+          }
         })
         .finally(() => {
           this.setState({ savingScore: false });

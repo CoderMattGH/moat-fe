@@ -23,7 +23,7 @@ export class ErrorPopup extends React.Component {
                 }}
                 className="button error-popup-button"
               >
-                OK!
+                OK
               </button>
             </div>
           </div>

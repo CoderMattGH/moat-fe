@@ -119,8 +119,6 @@ export class Register extends React.Component {
 
     this.setState({ registerLoading: true });
 
-    const updateUser = this.context.updateUser;
-
     const registerUrl = UrlConsts.PATH_API_REGISTER;
     const loginUrl = UrlConsts.PATH_API_LOGIN;
 
@@ -146,7 +144,11 @@ export class Register extends React.Component {
       .then(({ data }) => {
         Logger.debug("successfully logged in!");
 
-        updateUser(data.user);
+        if (!data.user) {
+          throw new Error("Returned user object was null");
+        }
+
+        this.props.handleLogin(data.user);
 
         loginOk = true;
 
