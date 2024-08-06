@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+
 import { UserContext } from "../../../context/UserContextProvider";
 
 import "./index.css";
@@ -11,10 +12,11 @@ export class MainMenu extends React.Component {
     const { user } = this.context;
 
     return (
-      <div className="MainMenu RoundBorder">
-        <ul>
-          <li>
+      <div className="main-menu round-border">
+        <ul className="main-menu-ul">
+          <li className="main-menu-li">
             <a
+              className="main-menu-link"
               href="/"
               onClick={(evt) => {
                 evt.preventDefault();
@@ -25,8 +27,9 @@ export class MainMenu extends React.Component {
             </a>
           </li>
 
-          <li>
+          <li className="main-menu-li">
             <a
+              className="main-menu-link"
               href="/"
               onClick={(evt) => {
                 evt.preventDefault();
@@ -38,8 +41,9 @@ export class MainMenu extends React.Component {
           </li>
 
           {user ? (
-            <li>
+            <li className="main-menu-li">
               <a
+                className="main-menu-link"
                 href="/"
                 onClick={(evt) => {
                   evt.preventDefault();
@@ -52,8 +56,9 @@ export class MainMenu extends React.Component {
           ) : null}
 
           {user ? (
-            <li>
+            <li className="main-menu-li">
               <a
+                className="main-menu-link"
                 href="/"
                 onClick={(evt) => {
                   evt.preventDefault();
@@ -65,8 +70,9 @@ export class MainMenu extends React.Component {
             </li>
           ) : (
             <>
-              <li>
+              <li className="main-menu-li">
                 <a
+                  className="main-menu-link"
                   href="/"
                   onClick={(evt) => {
                     evt.preventDefault();
@@ -77,8 +83,9 @@ export class MainMenu extends React.Component {
                 </a>
               </li>
 
-              <li>
+              <li className="main-menu-li">
                 <a
+                  className="main-menu-link"
                   href="/"
                   onClick={(evt) => {
                     evt.preventDefault();
@@ -92,8 +99,10 @@ export class MainMenu extends React.Component {
           )}
 
           {user && user.role === "ADMIN" ? (
-            <li>
-              <Link to="/admin">ADMIN</Link>
+            <li className="main-menu-li">
+              <Link className="main-menu-link" to="/admin">
+                ADMIN
+              </Link>
             </li>
           ) : null}
         </ul>

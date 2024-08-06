@@ -11,8 +11,8 @@ export class SavingScore extends React.Component {
   render() {
     return (
       <>
-        <div className="PopUpContainer">
-          <div className="PopUp-Screen RoundBorder">
+        <div className="pop-up-container">
+          <div className="pop-up-screen round-border">
             <div className="saving-score">
               <Loading />
               <p className="saving-score-text">Saving Score</p>

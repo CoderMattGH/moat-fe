@@ -1,4 +1,4 @@
-.PopUpContainer {
+.pop-up-container {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -7,7 +7,7 @@
   left: 0;
 }
 
-.PopUp-Screen {
+.pop-up-screen {
   position: absolute;
 
   top: 20%;
@@ -24,7 +24,7 @@
  * to prevent leaderboard clipping.
  */
 @media screen and (max-height: 400px) {
-  .PopUp-Screen {
+  .pop-up-screen {
     top: 6%;
   }
 }

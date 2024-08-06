@@ -1,4 +1,5 @@
 import React from "react";
+
 import { MOAT_VERSION } from "../../constants/constants";
 
 import "./index.css";
@@ -8,7 +9,7 @@ export class About extends React.Component {
   render() {
     return (
       <div
-        className="PopUpContainer"
+        className="pop-up-container"
         onClick={(evt) => {
           if (evt.target !== evt.currentTarget) {
             return;
@@ -17,15 +18,15 @@ export class About extends React.Component {
           this.props.showAboutPage(false);
         }}
       >
-        <div className="About PopUp-Screen RoundBorder">
+        <div className="about pop-up-screen round-border">
           <h2>About</h2>
-          <p>
-            <span className="AboutAppTitle">
+          <p className="about-para">
+            <span className="about-app-title">
               MATT'S ONLINE AIM TRAINER v{MOAT_VERSION}
             </span>
           </p>
-          <p>
-            <span className="AboutCopyright">
+          <p classname="about-para">
+            <span className="about-copyright">
               Copyright &copy; 2024 Matt Dixon
             </span>
           </p>

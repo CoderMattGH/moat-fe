@@ -20,7 +20,7 @@ export class AdminOptionsPage extends React.Component {
         <h2>Admin Options</h2>
 
         <div className="admin-options-form">
-          <div className="admin-options-row RoundBorder">
+          <div className="admin-options-row round-border">
             <button
               className="button button-admin-wide"
               disabled={!this.state.removeAllScoresBtnEnabled}
@@ -32,7 +32,7 @@ export class AdminOptionsPage extends React.Component {
             </button>
           </div>
 
-          <div className="admin-options-row RoundBorder">
+          <div className="admin-options-row round-border">
             <h3 className="admin-options-title">Remove scores by username</h3>
 
             <input

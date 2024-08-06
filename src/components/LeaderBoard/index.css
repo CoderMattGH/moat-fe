@@ -1,10 +1,10 @@
-.LeaderBoard {
+.leader-board {
   width: max(200px, 30vw);
   max-width: 300px;
   text-transform: uppercase;
 }
 
-.LeaderBoardEntry {
+.leader-board-entry {
   font-size: 0.85rem;
   font-weight: bold;
   color: #d2122e;
@@ -13,24 +13,24 @@
   padding-bottom: 13px;
 }
 
-.LeaderBoardEntry:last-child {
+.leader-board-entry:last-child {
   padding-bottom: 5px;
 }
 
-.LeaderBoardEntry:hover {
+.leader-board-entry:hover {
   font-weight: bold;
 }
 
-.LeaderBoardName {
+.leader-board-name {
   float: left;
 }
 
-.LeaderBoardScore {
+.leader-board-score {
   color: white;
   float: right;
 }
 
-.LeaderBoardEmptyMsg {
+.leader-board-empty-msg {
   font-size: max(10px, calc(10px + 0.2vw));
   color: white;
   margin-bottom: 2px;

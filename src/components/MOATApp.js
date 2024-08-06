@@ -47,7 +47,7 @@ class MOATApp extends React.Component {
   render() {
     return (
       <BrowserRouter>
-        <div className="MOATApp">
+        <div className="moat-app">
           <Header
             showLeaderBoard={this.showLeaderBoard}
             showAboutPage={this.showAboutPage}

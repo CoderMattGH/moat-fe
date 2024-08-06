@@ -135,7 +135,7 @@ export class Stats extends React.Component {
 
     return (
       <div
-        className="PopUpContainer"
+        className="pop-up-container"
         onClick={(evt) => {
           if (evt.target !== evt.currentTarget) {
             return;
@@ -144,7 +144,7 @@ export class Stats extends React.Component {
           this.props.showStatsPage(false);
         }}
       >
-        <div className="stats PopUp-Screen RoundBorder">
+        <div className="stats pop-up-screen round-border">
           <h2>Stats</h2>
           {content}
         </div>

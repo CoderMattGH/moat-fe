@@ -185,7 +185,7 @@ export class Register extends React.Component {
   render() {
     return (
       <div
-        className="PopUpContainer"
+        className="pop-up-container"
         onClick={(evt) => {
           if (evt.target !== evt.currentTarget) {
             return;
@@ -198,7 +198,7 @@ export class Register extends React.Component {
           this.props.showRegisterPage(false);
         }}
       >
-        <div className="PopUp-Screen RoundBorder">
+        <div className="pop-up-screen round-border">
           <h2>Register</h2>
           <form className="form" onSubmit={this.handleSubmit}>
             <label className="form-label">Username:</label>
