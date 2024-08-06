@@ -96,36 +96,45 @@ export class Sounds {
    * @param track An Audio object containing the file to play.
    */
   #playTrack = (track) => {
-    console.log("Playing music track.");
     track.play().catch(console.warn);
   };
 
   playShot = () => {
-    if (this.shouldPlaySounds === false) return;
+    if (this.shouldPlaySounds === false) {
+      return;
+    }
 
     this.#playSound(shot, 0.6);
   };
 
   playMiss = () => {
-    if (this.shouldPlaySounds === false) return;
+    if (this.shouldPlaySounds === false) {
+      return;
+    }
 
     this.#playSound(miss);
   };
 
   playHit = () => {
-    if (this.shouldPlaySounds === false) return;
+    if (this.shouldPlaySounds === false) {
+      return;
+    }
 
     this.#playSound(ding);
   };
 
   playDisappear = () => {
-    if (this.shouldPlaySounds === false) return;
+    if (this.shouldPlaySounds === false) {
+      return;
+    }
 
     this.#playSound(disappear, 0.4);
   };
 
   playMusic = () => {
-    if (this.shouldPlayMusic === false) return;
+    if (this.shouldPlayMusic === false) {
+      return;
+    }
 
     if (this.firstPlaythrough === true) {
       this.#playTrack(this.tracks[this.INTRO_TRACK_INDEX]);
@@ -140,7 +149,6 @@ export class Sounds {
 
     do {
       trackNum = Math.floor(Math.random() * 5);
-      console.log("TrackNum selected: " + trackNum);
     } while (trackNum === this.currentTrack);
 
     this.#playTrack(this.tracks[trackNum]);
@@ -155,19 +163,23 @@ export class Sounds {
 
   setShouldPlayMusic = (value, startPlaying) => {
     let prevValue = this.shouldPlayMusic;
-    if (prevValue === value) return;
+    if (prevValue === value) {
+      return;
+    }
 
     this.shouldPlayMusic = value;
 
     if (value === true) {
-      console.log("Last known current time: " + this.lastKnownCurrentTime);
       this.tracks[this.currentTrack].currentTime = this.lastKnownCurrentTime;
 
-      if (startPlaying === true)
+      if (startPlaying === true) {
         this.#playTrack(this.tracks[this.currentTrack]);
+      }
     }
 
-    if (value === false) this.stopMusic();
+    if (value === false) {
+      this.stopMusic();
+    }
   };
 
   setShouldPlaySounds = (value) => {

@@ -59,8 +59,6 @@ export class AdminOptionsPage extends React.Component {
   }
 
   disableAllButtons = () => {
-    console.log("Disabling all buttons.");
-
     this.setState({
       removeAllScoresBtnEnabled: false,
       removeScoresWNickBtnEnabled: false,
@@ -71,8 +69,6 @@ export class AdminOptionsPage extends React.Component {
   };
 
   enableAllButtons = () => {
-    console.log("Enabling all buttons.");
-
     this.setState({
       removeAllScoresBtnEnabled: true,
       removeScoresWNickBtnEnabled: true,
@@ -82,21 +78,7 @@ export class AdminOptionsPage extends React.Component {
     });
   };
 
-  handleAdminLogout = () => {
-    console.log("Trying to log out current admin...");
-
-    this.props.handleAdminLogout();
-  };
-
   handleRemoveAllScores = async () => {
-    alert("Unimplemented function!");
-  };
-
-  handleBanIpAddress = () => {
-    alert("Unimplemented function!");
-  };
-
-  handleUnBanIpAddress = () => {
     alert("Unimplemented function!");
   };
 

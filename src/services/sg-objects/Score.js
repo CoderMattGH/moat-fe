@@ -5,8 +5,6 @@ export class Score {
   #fontStyle;
 
   constructor(xPos, yPos, fontStyle) {
-    console.log("Score constructor called!");
-
     this.#playerScore = 0;
     this.#xPos = xPos;
     this.#yPos = yPos;
