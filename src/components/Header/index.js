@@ -7,10 +7,12 @@ import "./index.css";
 export class Header extends React.Component {
   render() {
     return (
-      <div className="Header">
+      <div className="header">
         <header>
           <h1>
-            <Link to="/">Matt's Online Aim Trainer</Link>
+            <Link className="header-title-link" to="/">
+              Matt's Online Aim Trainer
+            </Link>
           </h1>
           <MainMenu
             showLeaderBoard={this.props.showLeaderBoard}

@@ -95,7 +95,7 @@ export class Login extends React.Component {
   render() {
     return (
       <div
-        className="PopUpContainer"
+        className="pop-up-container"
         onClick={(evt) => {
           if (evt.target !== evt.currentTarget) {
             return;
@@ -108,7 +108,7 @@ export class Login extends React.Component {
           this.props.showLoginPage(false);
         }}
       >
-        <div className="PopUp-Screen RoundBorder">
+        <div className="pop-up-screen round-border">
           <h2>Login</h2>
 
           <form className="form form-login" onSubmit={this.handleSubmit}>

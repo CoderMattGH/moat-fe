@@ -18,7 +18,7 @@ export class ErrorPage extends React.Component {
 
   render() {
     return (
-      <div className="error-page-container RoundBorder">
+      <div className="error-page-container round-border">
         <h2>OOPS!</h2>
         <img className="error-page-img" src="/images/target.svg" />
         <p className="error-page-msg">{this.state.errorMessage}</p>

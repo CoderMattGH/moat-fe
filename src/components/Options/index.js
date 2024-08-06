@@ -25,7 +25,7 @@ export class Options extends React.Component {
   render() {
     return (
       <div
-        className="PopUpContainer"
+        className="pop-up-container"
         onClick={(evt) => {
           if (evt.target !== evt.currentTarget) {
             return;
@@ -34,7 +34,7 @@ export class Options extends React.Component {
           this.props.showOptionsPage(false);
         }}
       >
-        <div className="options PopUp-Screen RoundBorder">
+        <div className="options pop-up-screen round-border">
           <h2>Options</h2>
           <div className="option">
             <label className="form-label">Play Sounds</label>

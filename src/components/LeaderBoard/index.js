@@ -53,19 +53,21 @@ export class LeaderBoard extends React.Component {
     } else {
       if (this.state.leaderBoard.length) {
         content = this.state.leaderBoard.map((entry) => (
-          <div key={i++} className="LeaderBoardEntry">
-            <span className="LeaderBoardName">{entry.username}</span>
-            <span className="LeaderBoardScore">{entry.score}</span>
+          <div key={i++} className="leader-board-entry">
+            <span className="leader-board-name">{entry.username}</span>
+            <span className="leader-board-score">{entry.score}</span>
           </div>
         ));
       } else {
-        content = <p className="LeaderBoardEmptyMsg">Leaderboard is empty</p>;
+        content = (
+          <p className="leader-board-empty-msg">Leaderboard is empty</p>
+        );
       }
     }
 
     return (
       <div
-        className="PopUpContainer"
+        className="pop-up-container"
         onClick={(evt) => {
           if (evt.target !== evt.currentTarget) {
             return;
@@ -74,7 +76,7 @@ export class LeaderBoard extends React.Component {
           this.props.showLeaderBoard(false);
         }}
       >
-        <div className="LeaderBoard PopUp-Screen RoundBorder">
+        <div className="leader-board pop-up-screen round-border">
           <h2>Leaderboard</h2>
           {content}
         </div>

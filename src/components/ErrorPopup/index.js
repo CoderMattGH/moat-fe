@@ -10,8 +10,8 @@ export class ErrorPopup extends React.Component {
   render = () => {
     return (
       <>
-        <div className="PopUpContainer">
-          <div className="PopUp-Screen RoundBorder">
+        <div className="pop-up-container">
+          <div className="pop-up-screen round-border">
             <div className="error-popup">
               <h2>Error</h2>
               <p className="error-popup-msg">{this.props.errorMessage}</p>

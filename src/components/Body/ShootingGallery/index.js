@@ -17,7 +17,7 @@ import { ErrorPopup } from "../../ErrorPopup";
 
 import "./index.css";
 
-class ShootingGallery extends React.Component {
+export class ShootingGallery extends React.Component {
   #CANVAS_INIT_WIDTH = 600;
   #CANVAS_INIT_HEIGHT = 800;
 
@@ -82,7 +82,6 @@ class ShootingGallery extends React.Component {
     this.#prevWidth = this.#CANVAS_INIT_WIDTH;
 
     this.#canvasContainerDiv = React.createRef();
-
     this.#canvas = React.createRef();
 
     this.#sounds = new Sounds();
@@ -118,12 +117,12 @@ class ShootingGallery extends React.Component {
           />
         ) : null}
 
-        <div className="shootingGalleryGame" ref={this.#canvasContainerDiv}>
+        <div className="shooting-gallery-game" ref={this.#canvasContainerDiv}>
           <canvas
             width={this.#CANVAS_INIT_WIDTH}
             height={this.#CANVAS_INIT_HEIGHT}
-            id="shootingGalleryCanvas"
-            className="RoundBorder"
+            id="shooting-gallery-canvas"
+            className="round-border"
             ref={this.#canvas}
             onClick={(evt) => {
               evt.preventDefault();
@@ -819,5 +818,3 @@ class ShootingGallery extends React.Component {
     target.destroyTarget();
   };
 }
-
-export default ShootingGallery;

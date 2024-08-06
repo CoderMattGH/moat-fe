@@ -1,4 +1,4 @@
-.shootingGalleryGame {
+.shooting-gallery-game {
   display: flex;
 
   min-width: 0;
@@ -8,7 +8,7 @@
   flex-shrink: 1;
 }
 
-#shootingGalleryCanvas {
+#shooting-gallery-canvas {
   cursor: crosshair;
 
   flex-grow: 1;

@@ -1,9 +1,9 @@
-.MainMenu {
+.main-menu {
   margin-bottom: 12px;
   background-color: rgba(255, 255, 255, 0.1);
 }
 
-.MainMenu ul {
+.main-menu-ul {
   list-style-type: none;
   overflow: hidden;
   margin-top: 7px;
@@ -17,7 +17,7 @@
   font-weight: bold;
 }
 
-.MainMenu li {
+.main-menu-li {
   display: inline;
   padding-top: 0px;
   padding-bottom: 0px;
@@ -25,14 +25,15 @@
   padding-right: max(7px, 1.1vw);
 }
 
-.MainMenu li a {
+.main-menu-link {
   text-decoration: none;
   color: white;
 }
 
-.MainMenu li a:hover {
+.main-menu-link:hover {
   animation-name: brightenText;
   animation-duration: 1s;
+  animation-fill-mode: forwards;
 }
 
 @keyframes brightenText {
