@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Difficulty } from "../../constants/Difficulty.js";
+import { Difficulty } from "../../constants/Difficulty";
 
 import "./index.css";
 import "../PopUpContainer/index.css";

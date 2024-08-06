@@ -1,13 +1,13 @@
 import React from "react";
 
-import { SGTimer } from "../../../classes/sg-objects/SGTimer.js";
-import { RoundTarget } from "../../../classes/sg-objects/RoundTarget.js";
-import { BulletTrail } from "../../../classes/sg-objects/BulletTrail.js";
-import { Score } from "../../../classes/sg-objects/Score.js";
-import { Sounds } from "../../../classes/sg-objects/Sounds.js";
-import { PointExplosion } from "../../../classes/sg-objects/PointExplosion.js";
-import { TargetExplosion } from "../../../classes/sg-objects/TargetExplosion.js";
-import { GameStats } from "../../../classes/sg-objects/GameStats.js";
+import { SGTimer } from "../../../services/sg-objects/SGTimer";
+import { RoundTarget } from "../../../services/sg-objects/RoundTarget";
+import { BulletTrail } from "../../../services/sg-objects/BulletTrail";
+import { Score } from "../../../services/sg-objects/Score";
+import { Sounds } from "../../../services/sg-objects/Sounds";
+import { PointExplosion } from "../../../services/sg-objects/PointExplosion";
+import { TargetExplosion } from "../../../services/sg-objects/TargetExplosion";
+import { GameStats } from "../../../services/sg-objects/GameStats";
 
 import { SavingScore } from "./SavingScore";
 
