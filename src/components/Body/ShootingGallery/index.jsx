@@ -180,7 +180,7 @@ export class ShootingGallery extends React.Component {
     Logger.debug("In componentDidUpdate() in ShootingGallery.");
 
     // Prevents current context from becoming stale and throwing an error.
-    // this.#initCanvas();
+    this.#initCanvas();
   };
 
   #initCanvas = () => {
