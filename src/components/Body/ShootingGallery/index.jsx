@@ -92,8 +92,7 @@ export class ShootingGallery extends React.Component {
 
     this.#gameStats = new GameStats();
 
-    // this.#gameLength = 45;
-    this.#gameLength = 10;
+    this.#gameLength = import.meta.env.VITE_GAME_TIME || 45;
 
     this.#gameStarted = false;
     this.#gameEnded = false;
@@ -180,12 +179,52 @@ export class ShootingGallery extends React.Component {
     Logger.debug("In componentDidUpdate() in ShootingGallery.");
 
     // Prevents current context from becoming stale and throwing an error.
-    this.#initCanvas();
+    // this.#initCanvas();
+    this.#restoreCanvas();
+  };
+
+  #restoreCanvas = () => {
+    Logger.debug("Restoring ShootingGallery canvas.");
+
+    this.#getAndSetCanvasContext();
+
+    this.#drawBackground();
+
+    // Draw welcome message.
+    if (this.#gameStarted === false) {
+      this.#drawWelcomeMessage();
+    } else if (this.#gameEnded === true) {
+      this.#drawFinishedMessage();
+    }
+
+    // Redraw score and timer.
+    this.#sGTimer = new SGTimer(
+      this.#canvas.current.width - 10,
+      19,
+      this.#DEFAULT_SCORE_FONT
+    );
+
+    this.#score.setXPos(this.#canvas.current.width - 10);
+    this.#score.setYPos(45);
   };
 
   #initCanvas = () => {
     Logger.debug("Initialising ShootingGallery canvas.");
 
+    this.#getAndSetCanvasContext();
+    this.#drawBackground();
+
+    // Draw welcome message.
+    if (this.#gameStarted === false) {
+      this.#drawWelcomeMessage();
+    } else if (this.#gameEnded === true) {
+      this.#drawFinishedMessage();
+    }
+
+    this.#resetTimerAndScore();
+  };
+
+  #getAndSetCanvasContext = () => {
     // Check that the browser supports canvas.
     if (this.#canvas.current.getContext) {
       Logger.debug("Getting 2D canvas context.");
@@ -197,22 +236,11 @@ export class ShootingGallery extends React.Component {
         this.#canvasContainerDiv.current.clientWidth,
         this.#canvasContainerDiv.current.clientHeight
       );
-
-      this.#drawBackground();
     } else {
       Logger.error("Canvas not supported!");
 
       throw new Error("Canvas not supported!");
     }
-
-    // Draw welcome message.
-    if (this.#gameStarted === false) {
-      this.#drawWelcomeMessage();
-    } else if (this.#gameEnded === true) {
-      this.#drawFinishedMessage();
-    }
-
-    this.#resetTimerAndScore();
   };
 
   #resetTimerAndScore = () => {
@@ -233,7 +261,8 @@ export class ShootingGallery extends React.Component {
 
     this.#handleResizeEvent = true;
 
-    this.#initCanvas();
+    // this.#initCanvas();
+    this.#restoreCanvas();
   };
 
   #resizeCanvas = (width, height) => {

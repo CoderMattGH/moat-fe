@@ -45,4 +45,16 @@ export class Score {
   getPlayerScore = () => {
     return this.#playerScore;
   };
+
+  setPlayerScore = (playerScore) => {
+    this.#playerScore = playerScore;
+  };
+
+  setXPos = (xPos) => {
+    this.#xPos = xPos;
+  };
+
+  setYPos = (yPos) => {
+    this.#yPos = yPos;
+  };
 }
