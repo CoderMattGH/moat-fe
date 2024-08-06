@@ -14,18 +14,20 @@ export class MainMenu extends React.Component {
     return (
       <div className="main-menu round-border">
         <ul className="main-menu-ul">
-          <li className="main-menu-li">
-            <a
-              className="main-menu-link"
-              href="/"
-              onClick={(evt) => {
-                evt.preventDefault();
-                this.props.showOptionsPage(true);
-              }}
-            >
-              Options
-            </a>
-          </li>
+          {user && user.role === "ADMIN" ? null : (
+            <li className="main-menu-li">
+              <a
+                className="main-menu-link"
+                href="/"
+                onClick={(evt) => {
+                  evt.preventDefault();
+                  this.props.showOptionsPage(true);
+                }}
+              >
+                Options
+              </a>
+            </li>
+          )}
 
           <li className="main-menu-li">
             <a
@@ -65,7 +67,10 @@ export class MainMenu extends React.Component {
                   this.props.handleLogout();
                 }}
               >
-                Logout [{user.username}]
+                Logout{" "}
+                <span className="main-menu-logout-username">
+                  [{user.username}]
+                </span>
               </a>
             </li>
           ) : (
