@@ -1,17 +1,11 @@
-.Footer {
-  /*border: 1px solid blue;*/
-
-  font-size: max(8px, calc(8px + 0.2vw));
+.footer {
+  padding: 10px 0 10px 0;
+  font-size: 0.7rem;
   color: rgb(176, 20, 20);
   text-transform: uppercase;
   font-weight: bold;
 }
 
-.Footer a {
+.footer-notice {
   text-decoration: none;
-  color: rgba(255, 255, 255, 0.61);
-}
-
-.Footer a:hover {
-  text-decoration: underline;
 }

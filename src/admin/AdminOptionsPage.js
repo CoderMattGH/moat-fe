@@ -4,9 +4,6 @@ import { URLConsts } from "../constants/URLConsts";
 
 import "./css/AdminOptionsPage.css";
 
-/**
- * A class representing the Administrator Options Page.
- */
 class AdminOptionsPage extends React.Component {
   state = {
     ipBanList: "UNIMPLEMENTED FUNCTION",
@@ -21,85 +18,48 @@ class AdminOptionsPage extends React.Component {
 
   render() {
     return (
-      <div className="AdminOptionsPage">
+      <div className="admin-options-page">
         <h2>Admin Options</h2>
 
-        <p className="RoundBorder">
-          <button
-            disabled={!this.state.removeAllScoresBtnEnabled}
-            onClick={() => {
-              this.handleRemoveAllScores();
-            }}
-          >
-            Remove All Scores
-          </button>
-        </p>
+        <div className="admin-options-form">
+          <div className="admin-options-row RoundBorder">
+            <button
+              className="button button-admin-wide"
+              disabled={!this.state.removeAllScoresBtnEnabled}
+              onClick={() => {
+                this.handleRemoveAllScores();
+              }}
+            >
+              Remove All Scores
+            </button>
+          </div>
 
-        <p className="AdminRow RoundBorder">
-          <input
-            type="text"
-            onChange={(event) => {
-              this.setState({ removeNickname: event.target.value });
-            }}
-          ></input>
+          <div className="admin-options-row RoundBorder">
+            <h3 className="admin-options-title">Remove scores by username</h3>
 
-          <button
-            disabled={!this.state.removeScoresWNickBtnEnabled}
-            onClick={() => {
-              this.handleRemoveScoresWithNickname(this.state.removeNickname);
-            }}
-          >
-            Remove Scores With Nickname
-          </button>
-        </p>
+            <input
+              className="input-text"
+              type="text"
+              onChange={(event) => {
+                this.setState({ removeNickname: event.target.value });
+              }}
+            />
 
-        <p className="AdminRow RoundBorder">
-          <input type="text"></input>
-          <button
-            disabled={!this.state.banIpAddressBtnEnabled}
-            onClick={() => {
-              this.handleBanIpAddress();
-            }}
-          >
-            Ban IP Address
-          </button>
-        </p>
-
-        <p className="AdminRow RoundBorder">
-          <input type="text"></input>
-          <button
-            disabled={!this.state.unbanIpAddressBtnEnabled}
-            onClick={() => {
-              this.handleUnBanIpAddress();
-            }}
-          >
-            Unban IP Address
-          </button>
-        </p>
-
-        <p className="AdminRow RoundBorder">
-          <h3>LIST OF IP BANS</h3>
-
-          <textarea readOnly={true} value={this.state.ipBanList}></textarea>
-        </p>
-
-        <p>
-          <button
-            disabled={!this.state.logoutBtnEnabled}
-            onClick={() => {
-              this.handleAdminLogout();
-            }}
-          >
-            Logout
-          </button>
-        </p>
+            <button
+              className="button"
+              disabled={!this.state.removeScoresWNickBtnEnabled}
+              onClick={() => {
+                this.handleRemoveScoresWithNickname(this.state.removeNickname);
+              }}
+            >
+              Delete
+            </button>
+          </div>
+        </div>
       </div>
     );
   }
 
-  /**
-   * Disables all buttons on the Administrator Options Page.
-   */
   disableAllButtons = () => {
     console.log("Disabling all buttons.");
 
@@ -112,9 +72,6 @@ class AdminOptionsPage extends React.Component {
     });
   };
 
-  /**
-   * Enables all buttons on the Administrator Options page.
-   */
   enableAllButtons = () => {
     console.log("Enabling all buttons.");
 
@@ -133,113 +90,20 @@ class AdminOptionsPage extends React.Component {
     this.props.handleAdminLogout();
   };
 
-  /**
-   * Contacts the MOAT Server and attempts to remove all Scores from the Leaderboard.
-   */
   handleRemoveAllScores = async () => {
-    console.log("Removing all scores.");
-
-    this.disableAllButtons();
-
-    const adminUsername = this.props.adminUsername;
-    const adminPassword = this.props.adminPassword;
-
-    const authString = "Basic " + btoa(adminUsername + ":" + adminPassword);
-
-    const url = URLConsts.RPC_BASE_URL + "/admin/remove-all-scores/";
-
-    const fetchParams = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: authString,
-      },
-    };
-
-    let response = await fetch(url, fetchParams)
-      .then((response) => {
-        console.log("Fetch executed successfully.");
-
-        if (response.ok) {
-          return true;
-        } else {
-          throw new Error("Fetch response not OK");
-        }
-      })
-      .catch((error) => {
-        console.log("ERROR performing fetch: " + error);
-
-        return false;
-      });
-
-    console.log("Removing all scores successful: " + response);
-
-    this.enableAllButtons();
+    alert("Unimplemented function!");
   };
 
   handleBanIpAddress = () => {
-    console.log("NOT CURRENTLY IMPLEMENTED!");
+    alert("Unimplemented function!");
   };
 
   handleUnBanIpAddress = () => {
-    console.log("NOT CURRENTLY IMPLEMENTED!");
+    alert("Unimplemented function!");
   };
 
-  /**
-   * Contacts the MOAT Server and removes all the Scores from the Leaderboard with the specified
-   * Nickname.
-   * @param nickname A String representing the Nickname to remove from the Leaderboard.
-   */
   handleRemoveScoresWithNickname = async (nickname) => {
-    console.log("Handling removing scores with nickname.");
-
-    if (nickname === null || nickname === "" || nickname === undefined) {
-      console.log("Nickname cannot be null or empty.");
-
-      return;
-    }
-
-    this.disableAllButtons();
-
-    const adminUsername = this.props.adminUsername;
-    const adminPassword = this.props.adminPassword;
-
-    const authString = "Basic " + btoa(adminUsername + ":" + adminPassword);
-
-    const nicknameDTO = {
-      nickname: nickname,
-    };
-
-    const url = URLConsts.RPC_BASE_URL + "/admin/remove-scores-with-nickname/";
-
-    const fetchParams = {
-      method: "POST",
-      body: JSON.stringify(nicknameDTO),
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: authString,
-      },
-    };
-
-    let result = await fetch(url, fetchParams)
-      .then(async (response) => {
-        console.log("Successfully performed fetch.");
-
-        if (response.ok) {
-          return true;
-        } else {
-          return false;
-        }
-      })
-      .catch((error) => {
-        console.log("ERROR performing fetch: " + error);
-
-        return false;
-      });
-
-    console.log("Remove Nickname result: " + result);
-
-    this.enableAllButtons();
+    alert("Unimplemented function!");
   };
 }
 

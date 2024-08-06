@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import "./css/MainMenu.css";
 import { UserContext } from "./UserContextProvider";
 
@@ -88,6 +89,12 @@ class MainMenu extends React.Component {
               </li>
             </>
           )}
+
+          {user && user.role === "ADMIN" ? (
+            <li>
+              <Link to="/admin">ADMIN</Link>
+            </li>
+          ) : null}
 
           {/* <li>
             <a
