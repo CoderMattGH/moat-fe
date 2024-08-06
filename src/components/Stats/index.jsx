@@ -56,7 +56,7 @@ export class Stats extends React.Component {
         this.setState({ stats: stats });
       })
       .catch((err) => {
-        Logger.debug("Error getting stats.");
+        Logger.debug("Error loading stats.");
         Logger.debug(err);
       })
       .finally(() => {
@@ -83,6 +83,12 @@ export class Stats extends React.Component {
           <>
             <h3 className="stats-title">Last Game</h3>
             <div className="stat-row">
+              <span className="stat-row-name">Score</span>
+              <span className="stat-row-value">
+                {this.state.stats.lastStats.score}
+              </span>
+            </div>
+            <div className="stat-row">
               <span className="stat-row-name">Total Hits</span>
               <span className="stat-row-value">
                 {this.state.stats.lastStats.hits}
@@ -106,7 +112,20 @@ export class Stats extends React.Component {
                 {this.state.stats.lastStats.average}%
               </span>
             </div>
+
             <h3 className="stats-title">All Time</h3>
+            <div className="stat-row">
+              <span className="stat-row-name">High Score</span>
+              <span className="stat-row-value">
+                {this.state.stats.totalStats.highScore}
+              </span>
+            </div>
+            <div className="stat-row">
+              <span className="stat-row-name">Average Score</span>
+              <span className="stat-row-value">
+                {this.state.stats.totalStats.avgScore}
+              </span>
+            </div>
             <div className="stat-row">
               <span className="stat-row-name">Total Hits</span>
               <span className="stat-row-value">
