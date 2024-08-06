@@ -2,9 +2,9 @@
 // export const API_HOSTNAME = 'aim-api.codermatt.com';
 // export const API_PORT = 80;
 
-export const API_PROTOCOL = process.env.REACT_APP_RPC_PROTOCOL;
-export const API_HOSTNAME = process.env.REACT_APP_RPC_HOSTNAME;
-export const API_PORT = process.env.REACT_APP_RPC_PORT;
+export const API_PROTOCOL = import.meta.env.VITE_RPC_PROTOCOL;
+export const API_HOSTNAME = import.meta.env.VITE_RPC_HOSTNAME;
+export const API_PORT = import.meta.env.VITE_RPC_PORT;
 
 export const API_BASE_URL = `${API_PROTOCOL}://${API_HOSTNAME}:${API_PORT}`;
 

@@ -31,7 +31,7 @@
   display: block;
   transform: translate(-50%, -50%) rotate(-20deg) scale(150%);
 
-  background-image: url("../images/target.svg");
+  background-image: url("/images/logo.svg");
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center;
