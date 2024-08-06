@@ -14,6 +14,7 @@ import { ErrorPage } from "./ErrorPage";
 import { Register } from "./Register";
 import { AdminPage } from "./AdminPage";
 
+import { Logger } from "../services/logger/Logger";
 import { DeviceDetector } from "../services/device-detector/DeviceDetector";
 import { DifficultyValidator } from "../services/validators/DifficultyValidator";
 import { Cookies } from "../services/cookies/Cookies";
@@ -25,7 +26,7 @@ import { UserContext } from "../context/UserContextProvider";
 
 import "./MOATApp.css";
 
-class MOATApp extends React.Component {
+export class MOATApp extends React.Component {
   static contextType = UserContext;
 
   #cookies = new Cookies();
@@ -117,8 +118,6 @@ class MOATApp extends React.Component {
   }
 
   componentDidMount = () => {
-    console.log("Loading cookies.");
-
     this.loadOptionsFromCookie();
 
     // If mobile device, then disable sounds.
@@ -127,7 +126,7 @@ class MOATApp extends React.Component {
       this.setState({ playMusic: false });
     }
 
-    console.log("Cookies: " + document.cookie);
+    Logger.debug("Loading cookies: " + document.cookie);
   };
 
   componentDidUpdate(prevProps, prevState) {
@@ -149,7 +148,7 @@ class MOATApp extends React.Component {
   }
 
   saveOptionsToCookie = () => {
-    console.log("Saving options cookies.");
+    Logger.debug("Saving options to cookies.");
 
     this.#cookies.setCookie("difficulty", this.state.difficulty);
     this.#cookies.setCookie("playSounds", this.state.playSounds);
@@ -157,7 +156,7 @@ class MOATApp extends React.Component {
   };
 
   loadOptionsFromCookie = () => {
-    console.log("Loading options cookies.");
+    Logger.debug("Loading options from cookies.");
 
     let difficulty = this.#cookies.getCookie("difficulty");
     let playSounds = this.#cookies.getCookie("playSounds");
@@ -171,14 +170,10 @@ class MOATApp extends React.Component {
   };
 
   showAdminPage = () => {
-    console.log("Trying to load Admin Page...");
-
     this.setState({ adminPageVisible: true });
   };
 
   hideAdminPage = () => {
-    console.log("Hiding Admin Page...");
-
     this.setState({ adminPageVisible: false });
   };
 
@@ -294,5 +289,3 @@ class MOATApp extends React.Component {
     return axios.post(url, scoreObj, headers);
   };
 }
-
-export default MOATApp;

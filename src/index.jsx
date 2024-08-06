@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 
 import { UserContextProvider } from "./context/UserContextProvider";
-import MOATApp from "./components/MOATApp";
+import { MOATApp } from "./components/MOATApp";
 
 import "./index.css";
 

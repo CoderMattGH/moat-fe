@@ -2,6 +2,8 @@ import axios from "axios";
 import React from "react";
 
 import { Loading } from "../Loading";
+
+import { Logger } from "../../services/logger/Logger";
 import * as UrlConsts from "../../constants/url-constants";
 
 import "./index.css";
@@ -9,8 +11,6 @@ import "../PopUpContainer/index.css";
 
 export class LeaderBoard extends React.Component {
   constructor(props) {
-    console.log("Constructing LeaderBoard.");
-
     super(props);
   }
 
@@ -20,13 +20,11 @@ export class LeaderBoard extends React.Component {
   };
 
   componentDidMount = () => {
-    console.log("Mounting component!");
-
     this.populateLeaderBoard();
   };
 
   populateLeaderBoard = () => {
-    console.log("Populating leaderboard data.");
+    Logger.debug("Populating LeaderBoard data.");
 
     this.setState({ leaderBoardLoading: true });
 

@@ -1,9 +1,11 @@
+import { Logger } from "../logger/Logger";
+
 export class Cookies {
   COOKIE_MAX_AGE = "2147483647";
   COOKIE_PATH = "/";
 
   setCookie = (name, value) => {
-    console.log("Setting cookie: " + name + "=" + value);
+    Logger.debug("Setting cookie: " + name + "=" + value);
 
     if (
       name === undefined ||
@@ -11,7 +13,7 @@ export class Cookies {
       value === undefined ||
       value === null
     ) {
-      console.log("Error setting cookie!");
+      Logger.debug("Error setting cookie!");
 
       return;
     }
@@ -34,6 +36,7 @@ export class Cookies {
     let decodedCookies = decodeURIComponent(document.cookie);
 
     let cookieArray = decodedCookies.split(";");
+
     for (let i = 0; i < cookieArray.length; i++) {
       let cookie = cookieArray[i];
       cookie = cookie.trim();
@@ -47,7 +50,7 @@ export class Cookies {
   };
 
   deleteCookie = (name) => {
-    console.log("Deleting cookie: " + name);
+    Logger.debug("Deleting cookie: " + name);
 
     let cName = encodeURIComponent(name);
     let cookieString = `${cName}=0; max-age=0; path=${this.COOKIE_PATH}`;

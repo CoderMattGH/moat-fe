@@ -3,6 +3,8 @@ import axios from "axios";
 
 import { UserContext } from "../../context/UserContextProvider";
 import { Loading } from "../Loading";
+
+import { Logger } from "../../services/logger/Logger";
 import { getAuthHeader } from "../../util/util-functions";
 import * as UrlConsts from "../../constants/url-constants";
 
@@ -18,7 +20,7 @@ export class Stats extends React.Component {
   };
 
   componentDidMount = () => {
-    console.log("Mounting Stats.");
+    Logger.debug("Mounting Stats.");
 
     this.getUserStats();
   };
@@ -54,7 +56,8 @@ export class Stats extends React.Component {
         this.setState({ stats: stats });
       })
       .catch((err) => {
-        console.log(err);
+        Logger.debug("Error getting stats.");
+        Logger.debug(err);
       })
       .finally(() => {
         this.setState({ statsLoading: false });

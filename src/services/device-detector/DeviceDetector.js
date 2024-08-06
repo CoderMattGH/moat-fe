@@ -4,8 +4,6 @@ export class DeviceDetector {
   }
 
   static isMobileDevice = () => {
-    console.log("Detecting device.");
-
     let pattern = /iPad|iPhone|iPod|Mobile Safari/;
     let userAgent = navigator.userAgent;
 

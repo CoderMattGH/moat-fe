@@ -4,8 +4,6 @@ export class SGTimer {
   fontStyle;
 
   constructor(xPos, yPos, fontStyle) {
-    console.log("SGTimer constructor called!");
-
     this.xPos = xPos;
     this.yPos = yPos;
     this.fontStyle = fontStyle;

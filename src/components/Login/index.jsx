@@ -2,17 +2,12 @@ import React from "react";
 import axios from "axios";
 
 import { Loading } from "../Loading";
+
 import * as UrlConsts from "../../constants/url-constants";
 
 import "./index.css";
 
 export class Login extends React.Component {
-  constructor(props) {
-    console.log("Constructing Login.");
-
-    super(props);
-  }
-
   state = {
     username: "",
     password: "",
@@ -39,8 +34,6 @@ export class Login extends React.Component {
   };
 
   handleSubmit = (e) => {
-    console.log("In handleLogin() in Login");
-
     e.preventDefault();
 
     const username = this.state.username;

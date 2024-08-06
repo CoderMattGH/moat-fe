@@ -11,6 +11,7 @@ import { GameStats } from "../../../services/sg-objects/GameStats";
 
 import { SavingScore } from "./SavingScore";
 
+import { Logger } from "../../../services/logger/Logger";
 import { Difficulty } from "../../../constants/Difficulty";
 import { UserContext } from "../../../context/UserContextProvider";
 import { ErrorPopup } from "../../ErrorPopup";
@@ -74,7 +75,8 @@ export class ShootingGallery extends React.Component {
   };
 
   constructor(props) {
-    console.log("ShootingGallery constructor called!");
+    Logger.debug("Constructing ShootingGallery.");
+
     super(props);
 
     this.#handleResizeEvent = false;
@@ -107,6 +109,8 @@ export class ShootingGallery extends React.Component {
   }
 
   render() {
+    Logger.debug("In render() in ShootingGallery.");
+
     return (
       <>
         {this.state.savingScore ? <SavingScore /> : null}
@@ -139,15 +143,15 @@ export class ShootingGallery extends React.Component {
   };
 
   componentDidMount = () => {
+    Logger.debug("In componentDidMount() in ShootingGallery.");
+
     this.#initCanvas();
 
-    // Add resize listener.
-    console.log("Adding window resize listener.");
     window.addEventListener("resize", this.#resizeEventListener);
   };
 
   componentWillUnmount = () => {
-    console.log("Cleaning up ShootingGallery before unmount.");
+    Logger.debug("Cleaning up ShootingGallery before unmount.");
 
     console.log("Window resize listener removed.");
     window.removeEventListener("resize", this.#resizeEventListener);
@@ -179,11 +183,12 @@ export class ShootingGallery extends React.Component {
   };
 
   #initCanvas = () => {
-    console.log("Initialising canvas.");
+    Logger.debug("Initialising ShootingGallery canvas.");
 
     // Check that the browser supports canvas.
     if (this.#canvas.current.getContext) {
-      console.log("Getting 2d context.");
+      Logger.debug("Getting 2D canvas context.");
+
       this.#context = this.#canvas.current.getContext("2d");
 
       // Set the size of the canvas to the containing div size.
@@ -194,7 +199,7 @@ export class ShootingGallery extends React.Component {
 
       this.#drawBackground();
     } else {
-      console.log("Canvas not supported!");
+      Logger.error("Canvas not supported!");
     }
 
     // Draw welcome message.
@@ -218,7 +223,8 @@ export class ShootingGallery extends React.Component {
   };
 
   #resizeEventListener = (evt) => {
-    console.log("SG Container div was resized.");
+    Logger.debug("Shooting Gallery container div was resized.");
+
     this.#handleResizeEvent = true;
 
     this.#initCanvas();
@@ -231,8 +237,8 @@ export class ShootingGallery extends React.Component {
     this.#canvas.current.height = height;
     this.#canvas.current.width = width;
 
-    console.log("Resized canvas height: " + this.#canvas.current.height);
-    console.log("Resized canvas width: " + this.#canvas.current.width);
+    Logger.debug("Resized canvas height: " + this.#canvas.current.height);
+    Logger.debug("Resized canvas width: " + this.#canvas.current.width);
   };
 
   setDifficulty = (value) => {
@@ -247,7 +253,8 @@ export class ShootingGallery extends React.Component {
     let difficulties = Difficulty.getDifficulties();
 
     this.#targetsPerSecond = difficulties.get(difficulty).tps;
-    console.log(difficulties.get(difficulty).name + " difficulty selected.");
+
+    Logger.debug(difficulties.get(difficulty).name + " difficulty selected.");
   };
 
   #drawBackground = () => {
@@ -327,7 +334,8 @@ export class ShootingGallery extends React.Component {
   };
 
   #beginAnimation = () => {
-    console.log("Starting animation!");
+    Logger.debug("Starting Shooting Gallery animation!");
+
     this.#sounds.playMusic();
     this.setDifficulty(this.props.difficulty);
 
@@ -361,7 +369,7 @@ export class ShootingGallery extends React.Component {
 
       this.#beginAnimation();
     } else {
-      console.log("Game is not ready to restart!");
+      Logger.debug("Game is not ready to restart!");
     }
   };
 
@@ -371,7 +379,8 @@ export class ShootingGallery extends React.Component {
 
     // End animation.
     if (this.#animFrameReqId != null) {
-      console.log("Cancelling animation frame!");
+      Logger.debug("Cancelling animation frame!");
+
       cancelAnimationFrame(this.#animFrameReqId);
     }
 
@@ -382,7 +391,7 @@ export class ShootingGallery extends React.Component {
     this.#drawFinishedMessage();
     this.#sleepSetReadyToStart();
 
-    console.log(
+    Logger.debug(
       `Hits: ${this.#gameStats.getHits()} Misses: ${this.#gameStats.getMisses()} ` +
         `Disappeared: ${this.#gameStats.getTargetsDisappeared()}`
     );
@@ -399,7 +408,7 @@ export class ShootingGallery extends React.Component {
           user
         )
         .then(({ data }) => {
-          console.log("Score was successfully posted!");
+          Logger.debug("Score was successfully posted!");
         })
         .catch((err) => {
           this.setState({ errorMessage: "Error saving score!" });
@@ -408,8 +417,6 @@ export class ShootingGallery extends React.Component {
           this.setState({ savingScore: false });
         });
     }
-
-    console.log("Exiting finishGame() function!");
   };
 
   /**
@@ -417,7 +424,6 @@ export class ShootingGallery extends React.Component {
    * Avoids the user clicking to restart the game too fast.
    */
   #sleepSetReadyToStart = async () => {
-    console.log("Sleeping!");
     await new Promise((r) => setTimeout(r, 1000 * 1));
     this.#readyToRestart = true;
 
@@ -432,7 +438,7 @@ export class ShootingGallery extends React.Component {
       "#1f1f1f"
     );
 
-    console.log("Game is now ready to restart!");
+    Logger.debug("Game is now ready to restart!");
   };
 
   #updateProgress = (timestamp) => {
@@ -448,7 +454,8 @@ export class ShootingGallery extends React.Component {
     // Check that the game time hasn't expired.
     let gameLengthInMilliS = this.#gameLength * 1000;
     if (gameLengthInMilliS < this.#elapsedTime) {
-      console.log("Game timer has expired!");
+      Logger.debug("Game timer has expired!");
+
       this.#finishGame();
 
       return;
@@ -606,7 +613,8 @@ export class ShootingGallery extends React.Component {
 
       // Handle a canvas resize event.
       if (this.#handleResizeEvent === true) {
-        console.log("Handling resize!");
+        Logger.debug("Handling ShootingGallery canvas resize!");
+
         const targetRadius = this.#getTargetRadius();
 
         // Set the target radius incase the canvas has been resized.

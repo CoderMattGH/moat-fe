@@ -6,7 +6,6 @@ export class DifficultyValidator {
   }
 
   static validateDifficulty = (difficulty) => {
-    console.log("Validating difficulty!");
     if (difficulty === null || difficulty === undefined || difficulty === "")
       return false;
 

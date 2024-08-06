@@ -3,6 +3,8 @@ import axios from "axios";
 
 import { UserContext } from "../../context/UserContextProvider";
 import { Loading } from "../Loading";
+
+import { Logger } from "../../services/logger/Logger";
 import { Validator } from "../../services/validators/Validator";
 import * as UrlConsts from "../../constants/url-constants";
 
@@ -10,12 +12,6 @@ import "./index.css";
 
 export class Register extends React.Component {
   static contextType = UserContext;
-
-  constructor(props) {
-    console.log("Constructing Register.");
-
-    super(props);
-  }
 
   state = {
     username: "",
@@ -76,8 +72,6 @@ export class Register extends React.Component {
 
   // TODO: Error messages
   handleSubmit = (event) => {
-    console.log("In handleSubmit() in Register.");
-
     const username = this.state.username.trim();
     const email = this.state.email.trim();
     const password = this.state.password.trim();
@@ -120,11 +114,11 @@ export class Register extends React.Component {
   };
 
   registerUser = (username, email, password) => {
+    Logger.debug("Registering user...");
+
     this.setState({ registerLoading: true });
 
     const updateUser = this.context.updateUser;
-
-    console.log("In registerUser() in Register.");
 
     const registerUrl = UrlConsts.PATH_API_REGISTER;
     const loginUrl = UrlConsts.PATH_API_LOGIN;
@@ -140,6 +134,8 @@ export class Register extends React.Component {
     axios
       .post(registerUrl, userObj)
       .then(({ data }) => {
+        Logger.debug("Successfully registered!");
+
         const loginObj = { username: username, password: password };
 
         registerOk = true;
@@ -147,7 +143,7 @@ export class Register extends React.Component {
         return axios.post(loginUrl, loginObj);
       })
       .then(({ data }) => {
-        console.log("successfully logged in!");
+        Logger.debug("successfully logged in!");
 
         updateUser(data.user);
 
