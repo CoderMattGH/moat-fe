@@ -11,7 +11,7 @@ export class Loading extends React.Component {
         <img
           alt="Loading..."
           className="loading-image"
-          src="/images/target.svg"
+          src="/images/logo.svg"
         />
       </div>
     );
