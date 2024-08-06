@@ -10,12 +10,11 @@ import About from "./About.js";
 import Options from "./Options.js";
 import Stats from "./Stats.js";
 import { Login } from "./Login.js";
-import AdminPage from "./admin/AdminPage.js";
 import Cookies from "./cookies/Cookies.js";
 import Difficulty from "./constants/Difficulty.js";
-import ErrorPage from "./ErrorPage.js";
+import { ErrorPage } from "./ErrorPage.js";
 import { Register } from "./Register.js";
-
+import { AdminPage } from "./admin/AdminPage.js";
 import { URLConsts } from "./constants/URLConsts.js";
 import * as utilFunctions from "./util/util-functions.js";
 import { DifficultyValidator } from "./validators/DifficultyValidator.js";

@@ -1,78 +1,33 @@
 import React from "react";
+import { UserContext } from "../UserContextProvider";
+import { ErrorPage } from "../ErrorPage";
+import AdminOptionsPage from "./AdminOptionsPage";
 
-import "./css/AdminPage.css";
-
-import AdminLoginPage from "./AdminLoginPage.js";
-import AdminOptionsPage from "./AdminOptionsPage.js";
-
-/**
- * A class representing the Administrator Page.
- */
-class AdminPage extends React.Component {
-  constructor(props) {
-    super(props);
-    console.log("Constructing AdminPage.");
-  }
-
-  state = {
-    isLoggedIn: false,
-    adminUsername: "",
-    adminPassword: "",
-  };
+export class AdminPage extends React.Component {
+  static contextType = UserContext;
 
   render() {
-    let page;
+    const { user } = this.context;
 
-    if (!this.state.isLoggedIn) {
-      page = (
-        <AdminLoginPage
-          setIsLoggedIn={this.setIsLoggedIn}
-          setAdminUsername={this.setAdminUsername}
-          setAdminPassword={this.setAdminPassword}
-          adminUsername={this.state.adminUsername}
-          adminPassword={this.state.adminPassword}
-        />
-      );
+    let isAdmin;
+    if (!user || (user && user.role !== "ADMIN")) {
+      isAdmin = false;
     } else {
-      page = (
-        <AdminOptionsPage
-          adminUsername={this.state.adminUsername}
-          adminPassword={this.state.adminPassword}
-          handleAdminLogout={this.handleAdminLogout}
-        />
-      );
+      isAdmin = true;
     }
 
-    return <div className="AdminPage RoundBorder">{page}</div>;
+    return (
+      <>
+        {isAdmin ? (
+          <div>
+            <AdminOptionsPage />
+          </div>
+        ) : (
+          <div>
+            <ErrorPage errorMessage="Access denied!" />
+          </div>
+        )}
+      </>
+    );
   }
-
-  setAdminUsername = (adminUsername) => {
-    console.log("Setting Admin Username.");
-
-    this.setState({ adminUsername: adminUsername });
-  };
-
-  setAdminPassword = (adminPassword) => {
-    console.log("Setting Admin Password.");
-
-    this.setState({ adminPassword: adminPassword });
-  };
-
-  setIsLoggedIn = (loggedIn) => {
-    console.log("Setting isLoggedIn status.");
-
-    this.setState({ isLoggedIn: loggedIn });
-  };
-
-  handleAdminLogout = () => {
-    console.log("Handling admin logout.");
-
-    this.setState({
-      isLoggedIn: false,
-      adminUsername: "",
-      adminPassword: "",
-    });
-  };
 }
-
-export default AdminPage;
