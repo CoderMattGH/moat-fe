@@ -1,4 +1,4 @@
-class Difficulty {
+export class Difficulty {
   static #difficulties;
   static #DEFAULT_DIFFICULTY;
   static #MAX_DIFFICULTY;
@@ -98,5 +98,3 @@ class Difficulty {
     return this.#difficulties;
   }
 }
-
-export default Difficulty;

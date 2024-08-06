@@ -1,4 +1,4 @@
-import Difficulty from "../constants/Difficulty.js";
+import { Difficulty } from "../constants/Difficulty.js";
 
 export class DifficultyValidator {
   constructor() {
