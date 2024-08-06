@@ -14,9 +14,9 @@ import { ErrorPage } from "./ErrorPage";
 import { Register } from "./Register";
 import { AdminPage } from "./AdminPage";
 
-import { DeviceDetector } from "../classes/device-detector/DeviceDetector";
-import { DifficultyValidator } from "../validators/DifficultyValidator";
-import { Cookies } from "../classes/cookies/Cookies";
+import { DeviceDetector } from "../services/device-detector/DeviceDetector";
+import { DifficultyValidator } from "../services/validators/DifficultyValidator";
+import { Cookies } from "../services/cookies/Cookies";
 import { Difficulty } from "../constants/Difficulty";
 import * as UtilFunctions from "../util/util-functions";
 import * as UrlConsts from "../constants/url-constants";

@@ -3,7 +3,7 @@ import axios from "axios";
 
 import { UserContext } from "../../context/UserContextProvider";
 import { Loading } from "../Loading";
-import { Validator } from "../../validators/Validator";
+import { Validator } from "../../services/validators/Validator";
 import * as UrlConsts from "../../constants/url-constants";
 
 import "./index.css";
@@ -41,7 +41,6 @@ export class Register extends React.Component {
     this.setState({ username: value });
   };
 
-  // TODO: Fix email validation
   handleEmailInput = (event) => {
     let value = event.target.value.toUpperCase();
 
