@@ -153,7 +153,6 @@ export class ShootingGallery extends React.Component {
   componentWillUnmount = () => {
     Logger.debug("Cleaning up ShootingGallery before unmount.");
 
-    console.log("Window resize listener removed.");
     window.removeEventListener("resize", this.#resizeEventListener);
 
     this.#sounds.stopMusic();
@@ -178,8 +177,10 @@ export class ShootingGallery extends React.Component {
   };
 
   componentDidUpdate = (prevProps, prevState) => {
+    Logger.debug("In componentDidUpdate() in ShootingGallery.");
+
     // Prevents current context from becoming stale and throwing an error.
-    this.#initCanvas();
+    // this.#initCanvas();
   };
 
   #initCanvas = () => {
@@ -200,11 +201,16 @@ export class ShootingGallery extends React.Component {
       this.#drawBackground();
     } else {
       Logger.error("Canvas not supported!");
+
+      throw new Error("Canvas not supported!");
     }
 
     // Draw welcome message.
-    if (this.#gameStarted === false) this.#drawWelcomeMessage();
-    else if (this.#gameEnded === true) this.#drawFinishedMessage();
+    if (this.#gameStarted === false) {
+      this.#drawWelcomeMessage();
+    } else if (this.#gameEnded === true) {
+      this.#drawFinishedMessage();
+    }
 
     this.#resetTimerAndScore();
   };
