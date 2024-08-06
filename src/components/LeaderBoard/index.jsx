@@ -5,18 +5,18 @@ import { Loading } from "../Loading";
 
 import { Logger } from "../../services/logger/Logger";
 import * as UrlConsts from "../../constants/url-constants";
+import * as Constants from "../../constants/constants";
 
 import "./index.css";
 import "../PopUpContainer/index.css";
 
 export class LeaderBoard extends React.Component {
-  constructor(props) {
-    super(props);
-  }
+  LEADERBOARD_EMPTY_MSG = "Leaderboard is empty";
 
   state = {
     leaderBoard: [],
     leaderBoardLoading: false,
+    leaderBoardErrorMsg: this.LEADERBOARD_EMPTY_MSG,
   };
 
   componentDidMount = () => {
@@ -35,7 +35,23 @@ export class LeaderBoard extends React.Component {
         this.setState({ leaderBoard: data.scores });
       })
       .catch((err) => {
-        console.log("Error loading leaderboard!");
+        if (err.response) {
+          if (err.response.status === 404) {
+            this.setState({ leaderBoardErrorMsg: this.LEADERBOARD_EMPTY_MSG });
+          } else {
+            this.setState({
+              leaderBoardErrorMsg: Constants.SERVER_ERROR,
+            });
+          }
+        } else if (err.request) {
+          this.setState({
+            leaderBoardErrorMsg: Constants.SERVER_CONNECTION_ERROR,
+          });
+        } else {
+          this.setState({
+            leaderBoardErrorMsg: Constants.UNKNOWN_ERROR,
+          });
+        }
       })
       .finally(() => {
         this.setState({ leaderBoardLoading: false });
@@ -58,7 +74,9 @@ export class LeaderBoard extends React.Component {
         ));
       } else {
         content = (
-          <p className="leader-board-empty-msg">Leaderboard is empty</p>
+          <p className="leader-board-empty-msg">
+            {this.state.leaderBoardErrorMsg}
+          </p>
         );
       }
     }

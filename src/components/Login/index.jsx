@@ -4,6 +4,7 @@ import axios from "axios";
 import { Loading } from "../Loading";
 
 import * as UrlConsts from "../../constants/url-constants";
+import * as Constants from "../../constants/constants";
 
 import "./index.css";
 
@@ -64,17 +65,17 @@ export class Login extends React.Component {
         this.props.handleLogin(data.user);
       })
       .catch((err) => {
-        if (err.response && err.response.status) {
-          let status = err.response.status;
-
-          if (status === 401) {
+        if (err.response) {
+          if (err.response.status === 401) {
             this.setState({ errorMessage: "Invalid username or password!" });
-
-            return;
+          } else {
+            this.setState({ errorMessage: Constants.SERVER_ERROR });
           }
+        } else if (err.request) {
+          this.setState({ errorMessage: Constants.SERVER_CONNECTION_ERROR });
+        } else {
+          this.setState({ errorMessage: Constants.UNKNOWN_ERROR });
         }
-
-        this.setState({ errorMessage: "Unknown error logging in!" });
       })
       .finally(() => {
         this.setState({ loginLoading: false });

@@ -8,6 +8,8 @@ import track03F from "./sounds/track03.mp3";
 import track04F from "./sounds/track04.mp3";
 import track05F from "./sounds/track05.mp3";
 
+import { Logger } from "../logger/Logger";
+
 export class Sounds {
   NUM_TRACKS = 5;
   INTRO_TRACK_INDEX = 0;
@@ -86,8 +88,7 @@ export class Sounds {
 
       audioElem.play().catch(console.warn);
     } catch (error) {
-      console.log("Error playing sound!");
-      console.log(error);
+      Logger.debug("Error playing sound!");
     }
   };
 
