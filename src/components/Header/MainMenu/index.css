@@ -30,6 +30,10 @@
   color: white;
 }
 
+.main-menu-logout-username {
+  cursor: inherit;
+}
+
 .main-menu-link:hover {
   animation-name: brightenText;
   animation-duration: 1s;
