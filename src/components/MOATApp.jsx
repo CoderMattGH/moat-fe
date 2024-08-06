@@ -270,7 +270,7 @@ export class MOATApp extends React.Component {
   };
 
   sendScoreToServer = (score, hits, misses, notHits, user) => {
-    console.log("Sending score to server.");
+    Logger.debug("Posting score to server");
 
     let url = UrlConsts.PATH_API_POST_SCORE;
 

@@ -7,6 +7,7 @@ import { Loading } from "../Loading";
 import { Logger } from "../../services/logger/Logger";
 import { Validator } from "../../services/validators/Validator";
 import * as UrlConsts from "../../constants/url-constants";
+import * as Constants from "../../constants/constants";
 
 import "./index.css";
 
@@ -152,26 +153,39 @@ export class Register extends React.Component {
         this.props.showRegisterPage(false);
       })
       .catch((err) => {
-        console.log(err);
-
         if (!registerOk) {
           if (err.response && err.response.data) {
-            let status = err.response.status;
-            let message = err.response.data.message;
-
-            if (status === 400 && message) {
-              this.setState({ confPasswordError: message });
-
-              return;
+            if (err.response.status) {
+              this.setState({ confPasswordError: err.response.data.message });
+            } else {
+              this.setState({ confPasswordError: Constants.SERVER_ERROR });
             }
+          } else if (err.request) {
+            this.setState({
+              confPasswordError: Constants.SERVER_CONNECTION_ERROR,
+            });
+          } else {
+            this.setState({ confPasswordError: Constants.UNKNOWN_ERROR });
           }
-
-          this.setState({ confPasswordError: "Error registering user!" });
 
           return;
         }
 
-        this.setState({ confPasswordError: "Error logging in!" });
+        if (!loginOk) {
+          if (err.response) {
+            this.setState({
+              confPasswordError: "Error logging in!",
+            });
+          } else if (err.request) {
+            this.setState({
+              confPasswordError: Constants.SERVER_CONNECTION_ERROR,
+            });
+          } else {
+            this.setState({
+              confPasswordError: Constants.UNKNOWN_ERROR,
+            });
+          }
+        }
       })
       .finally(() => {
         this.setState({ registerLoading: false });

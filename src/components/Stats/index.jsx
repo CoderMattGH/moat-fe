@@ -7,6 +7,7 @@ import { Loading } from "../Loading";
 import { Logger } from "../../services/logger/Logger";
 import { getAuthHeader } from "../../util/util-functions";
 import * as UrlConsts from "../../constants/url-constants";
+import * as Constants from "../../constants/constants";
 
 import "./index.css";
 import "../PopUpContainer/index.css";
@@ -14,9 +15,12 @@ import "../PopUpContainer/index.css";
 export class Stats extends React.Component {
   static contextType = UserContext;
 
+  DEFAULT_STATS_MESSAGE = "No previous games played";
+
   state = {
     stats: null,
     statsLoading: false,
+    statsMessage: this.DEFAULT_STATS_MESSAGE,
   };
 
   componentDidMount = () => {
@@ -56,8 +60,13 @@ export class Stats extends React.Component {
         this.setState({ stats: stats });
       })
       .catch((err) => {
-        Logger.debug("Error loading stats.");
-        Logger.debug(err);
+        if (err.response && err.response.status === 404) {
+          this.setState({ statsMessage: this.DEFAULT_STATS_MESSAGE });
+        } else if (err.request) {
+          this.setState({ statusMessage: Constants.SERVER_CONNECTION_ERROR });
+        } else {
+          this.setState({ statusMessage: Constants.UNKNOWN_ERROR });
+        }
       })
       .finally(() => {
         this.setState({ statsLoading: false });
@@ -75,7 +84,7 @@ export class Stats extends React.Component {
       if (!this.state.stats) {
         content = (
           <div className="stat-row no-stats">
-            <p>No previous games played</p>
+            <p>{this.state.statsMessage}</p>
           </div>
         );
       } else {

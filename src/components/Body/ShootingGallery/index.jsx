@@ -10,11 +10,12 @@ import { TargetExplosion } from "../../../services/sg-objects/TargetExplosion";
 import { GameStats } from "../../../services/sg-objects/GameStats";
 
 import { SavingScore } from "./SavingScore";
+import { ErrorPopup } from "../../ErrorPopup";
 
+import * as Constants from "../../../constants/constants";
 import { Logger } from "../../../services/logger/Logger";
 import { Difficulty } from "../../../constants/Difficulty";
 import { UserContext } from "../../../context/UserContextProvider";
-import { ErrorPopup } from "../../ErrorPopup";
 
 import "./index.css";
 
@@ -163,14 +164,17 @@ export class ShootingGallery extends React.Component {
   shouldComponentUpdate = (newProps, newState) => {
     // If play music option has changed.
     if (this.props.playMusic !== newProps.playMusic) {
-      if (this.#gameStarted === true)
+      if (this.#gameStarted === true) {
         this.#sounds.setShouldPlayMusic(newProps.playMusic, true);
-      else this.#sounds.setShouldPlayMusic(newProps.playMusic, false);
+      } else {
+        this.#sounds.setShouldPlayMusic(newProps.playMusic, false);
+      }
     }
 
     // If play sounds option has changed.
-    if (this.props.playSounds !== newProps.playSounds)
+    if (this.props.playSounds !== newProps.playSounds) {
       this.#sounds.setShouldPlaySounds(newProps.playSounds);
+    }
 
     return true;
   };
@@ -281,7 +285,7 @@ export class ShootingGallery extends React.Component {
     try {
       difficulty = parseInt(value);
     } catch (error) {
-      console.log("Error parsing difficulty!");
+      Logger.error("Error parsing difficulty!");
       difficulty = Difficulty.DEFAULT_DIFFICULTY;
     }
 
