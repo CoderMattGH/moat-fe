@@ -1,10 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import "./css/index.css";
+import "./index.css";
 
-import MOATApp from "./MOATApp.js";
+import MOATApp from "./components/MOATApp.js";
 
-import { UserContextProvider } from "./UserContextProvider.js";
+import { UserContextProvider } from "./context/UserContextProvider.js";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
