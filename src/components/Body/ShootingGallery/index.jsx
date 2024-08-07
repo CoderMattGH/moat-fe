@@ -9,10 +9,8 @@ import { PointExplosion } from "../../../services/sg-objects/PointExplosion";
 import { TargetExplosion } from "../../../services/sg-objects/TargetExplosion";
 import { GameStats } from "../../../services/sg-objects/GameStats";
 
-import { SavingScore } from "./SavingScore";
 import { ErrorPopup } from "../../ErrorPopup";
 
-import * as Constants from "../../../constants/constants";
 import { Logger } from "../../../services/logger/Logger";
 import { Difficulty } from "../../../constants/Difficulty";
 import { UserContext } from "../../../context/UserContextProvider";
@@ -113,7 +111,6 @@ export class ShootingGallery extends React.Component {
 
     return (
       <>
-        {this.state.savingScore ? <SavingScore /> : null}
         {this.state.errorMessage ? (
           <ErrorPopup
             errorMessage={this.state.errorMessage}
