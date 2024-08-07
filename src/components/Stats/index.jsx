@@ -63,9 +63,9 @@ export class Stats extends React.Component {
         if (err.response && err.response.status === 404) {
           this.setState({ statsMessage: this.DEFAULT_STATS_MESSAGE });
         } else if (err.request) {
-          this.setState({ statusMessage: Constants.SERVER_CONNECTION_ERROR });
+          this.setState({ statsMessage: Constants.SERVER_CONNECTION_ERROR });
         } else {
-          this.setState({ statusMessage: Constants.UNKNOWN_ERROR });
+          this.setState({ statsMessage: Constants.UNKNOWN_ERROR });
         }
       })
       .finally(() => {
