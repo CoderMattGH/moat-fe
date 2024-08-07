@@ -32,6 +32,7 @@
 
 .main-menu-logout-username {
   cursor: inherit;
+  font-weight: normal;
 }
 
 .main-menu-link:hover {

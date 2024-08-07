@@ -74,7 +74,7 @@ export class LeaderBoard extends React.Component {
         ));
       } else {
         content = (
-          <p className="leader-board-empty-msg">
+          <p className="popup-error-message">
             {this.state.leaderBoardErrorMsg}
           </p>
         );

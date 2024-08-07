@@ -29,10 +29,3 @@
   color: white;
   float: right;
 }
-
-.leader-board-empty-msg {
-  font-size: max(10px, calc(10px + 0.2vw));
-  color: white;
-  margin-bottom: 2px;
-  font-weight: bold;
-}

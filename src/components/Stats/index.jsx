@@ -83,9 +83,7 @@ export class Stats extends React.Component {
     } else {
       if (!this.state.stats) {
         content = (
-          <div className="stat-row no-stats">
-            <p>{this.state.statsMessage}</p>
-          </div>
+          <p className="popup-error-message">{this.state.statsMessage}</p>
         );
       } else {
         content = (
@@ -133,24 +131,6 @@ export class Stats extends React.Component {
               <span className="stat-row-name">Average Score</span>
               <span className="stat-row-value">
                 {this.state.stats.totalStats.avgScore}
-              </span>
-            </div>
-            <div className="stat-row">
-              <span className="stat-row-name">Total Hits</span>
-              <span className="stat-row-value">
-                {this.state.stats.totalStats.totalHits}
-              </span>
-            </div>
-            <div className="stat-row">
-              <span className="stat-row-name">Total Misses</span>
-              <span className="stat-row-value">
-                {this.state.stats.totalStats.totalMisses}
-              </span>
-            </div>
-            <div className="stat-row">
-              <span className="stat-row-name">Targets Not Hit</span>
-              <span className="stat-row-value">
-                {this.state.stats.totalStats.totalNotHits}
               </span>
             </div>
             <div className="stat-row">
