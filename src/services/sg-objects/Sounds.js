@@ -84,7 +84,9 @@ export class Sounds {
     try {
       let audioElem = new Audio(soundRsrc);
 
-      if (volume !== undefined) audioElem.volume = volume;
+      if (volume !== undefined) {
+        audioElem.volume = volume;
+      }
 
       audioElem.play().catch(console.warn);
     } catch (error) {
@@ -113,7 +115,7 @@ export class Sounds {
       return;
     }
 
-    this.#playSound(miss);
+    this.#playSound(miss, 0.6);
   };
 
   playHit = () => {
