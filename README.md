@@ -7,7 +7,7 @@ This is the client software written in Javascript using React.
 
 You can play MOAT here: https://aim.codermatt.com
 
-The server back-end repository: https://github.com/CoderMattGH/moat-be/
+You can view the server back-end repository here: https://github.com/CoderMattGH/moat-be/
 
 © 2024 All rights reserved Matthew Dixon.
 
