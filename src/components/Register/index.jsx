@@ -212,11 +212,18 @@ export class Register extends React.Component {
       >
         <div className="pop-up-screen round-border">
           <h2>Register</h2>
-          <form className="form" onSubmit={this.handleSubmit}>
-            <label className="form-label">Username:</label>
+          <form
+            className="form"
+            onSubmit={this.handleSubmit}
+            autoComplete="off"
+          >
+            <label for="username" className="form-label">
+              Username:
+            </label>
             <input
               className="input-text"
               type="text"
+              name="username"
               value={this.state.username}
               onChange={this.handleUsernameInput}
               disabled={this.state.registerLoading}
@@ -226,10 +233,13 @@ export class Register extends React.Component {
               <p className="register-err-msg">{this.state.usernameError}</p>
             ) : null}
 
-            <label className="form-label">Email:</label>
+            <label for="email" className="form-label">
+              Email:
+            </label>
             <input
               className="input-text"
               type="text"
+              name="email"
               value={this.state.email}
               onChange={this.handleEmailInput}
               disabled={this.state.registerLoading}
@@ -239,10 +249,13 @@ export class Register extends React.Component {
               <p className="register-err-msg">{this.state.emailError}</p>
             ) : null}
 
-            <label className="form-label">Password:</label>
+            <label for="password" className="form-label">
+              Password:
+            </label>
             <input
               className="input-text"
               type="password"
+              name="password"
               value={this.state.password}
               onChange={this.handlePasswordInput}
               disabled={this.state.registerLoading}
@@ -252,10 +265,13 @@ export class Register extends React.Component {
               <p className="register-err-msg">{this.state.passwordError}</p>
             ) : null}
 
-            <label className="form-label">Confirm Password:</label>
+            <label for="conf-password" className="form-label">
+              Confirm Password:
+            </label>
             <input
               className="input-text"
               type="password"
+              name="conf-password"
               value={this.state.confirmPassword}
               onChange={this.handleConfirmPasswordInput}
               disabled={this.state.registerLoading}

@@ -78,6 +78,11 @@ h2 {
   border: none;
 }
 
+.input-text:disabled {
+  opacity: 0.5;
+  background-color: white;
+}
+
 .select {
   text-transform: uppercase;
   margin-top: 1px;
