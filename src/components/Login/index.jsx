@@ -106,18 +106,24 @@ export class Login extends React.Component {
           <h2>Login</h2>
 
           <form className="form form-login" onSubmit={this.handleSubmit}>
-            <label className="form-label">Username:</label>
+            <label for="username" className="form-label">
+              Username:
+            </label>
             <input
               className="input-text"
               type="text"
+              name="username"
               value={this.state.username}
               onChange={this.handleUsernameInput}
               disabled={this.state.loginLoading}
             />
-            <label className="form-label">Password:</label>
+            <label for="password" className="form-label">
+              Password:
+            </label>
             <input
               className="input-text"
               type="password"
+              name="password"
               value={this.state.password}
               onChange={this.handlePasswordInput}
               disabled={this.state.loginLoading}
